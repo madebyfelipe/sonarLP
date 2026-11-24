@@ -140,7 +140,7 @@ p{margin:0}
 @keyframes live{70%{box-shadow:0 0 0 7px rgba(60,203,108,0)}100%{box-shadow:0 0 0 0 rgba(60,203,108,0)}}
 .w-head .replay{margin-left:auto;display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);background:#fff;border-radius:999px;height:36px;padding:0 14px;font-size:12px;font-weight:600;color:var(--ink-2)}
 .w-head .replay:hover{border-color:var(--ink);color:var(--ink)}
-.msgs{flex:1 1 auto;min-height:0;overflow-y:auto;scrollbar-width:thin;scrollbar-color:#CBD5DC transparent;padding:16px;display:flex;flex-direction:column;gap:10px;scroll-behavior:smooth;overscroll-behavior:contain}
+.msgs{flex:1 1 auto;min-height:0;overflow-y:auto;scrollbar-width:thin;scrollbar-color:#CBD5DC transparent;padding:16px;display:flex;flex-direction:column;gap:10px;scroll-behavior:smooth;overscroll-behavior:auto;-webkit-overflow-scrolling:touch}
 .msg{max-width:86%;font-size:14px;line-height:1.45;animation:pop .35s cubic-bezier(.3,1.4,.5,1) both}
 @keyframes pop{from{transform:translateY(8px) scale(.96);opacity:.0}to{transform:none;opacity:1}}
 .msg.bot{display:flex;gap:8px;align-items:flex-end}
@@ -201,7 +201,7 @@ p{margin:0}
 .next svg{flex:none}
 
 @media (max-width:1060px){.demo-grid{grid-template-columns:1fr}.dx{margin-top:0}}
-@media (max-width:860px){.b-body{grid-template-columns:1fr}.site{display:none}.peek{right:24px}}
+@media (max-width:860px){.b-body{grid-template-columns:1fr;height:520px}.site{display:none}.peek{right:24px}}
 
 /* Marquee strip */
 .strip{padding:32px 0 8px}
@@ -233,7 +233,7 @@ p{margin:0}
 .clock-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:64px;align-items:center;position:relative}
 .clock-l{display:grid;gap:36px}
 /* dial */
-.dialw{position:relative;width:min(520px,100%);aspect-ratio:1;margin:0 auto;touch-action:none;-webkit-user-select:none;user-select:none}
+.dialw{position:relative;width:min(520px,100%);aspect-ratio:1;margin:0 auto;touch-action:pan-y;-webkit-user-select:none;user-select:none}
 .dialw .bars{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
 .bars .bar{fill:currentColor;opacity:.28;transition:opacity .3s,fill .3s}
 .bars .bar:hover{opacity:.6}
@@ -257,7 +257,7 @@ p{margin:0}
 .zz i:nth-child(2){animation-delay:.4s}.zz i:nth-child(3){animation-delay:.8s}
 @keyframes zz{0%,100%{transform:translateY(0);opacity:.3}50%{transform:translateY(-4px);opacity:1}}
 .d-lbl{position:absolute;font-family:var(--mono);font-size:12px;opacity:.7;transform:translate(-50%,-50%);white-space:nowrap}
-.d-knob{position:absolute;left:50%;top:50%;width:46px;height:46px;margin:-23px 0 0 -23px;border-radius:50%;border:3px solid #fff;padding:0;transform:rotate(var(--ang,210deg)) translateY(calc(var(--r,150px) * -1)) rotate(calc(var(--ang,210deg) * -1));transition:transform .45s cubic-bezier(.2,.8,.2,1),background .5s,box-shadow .5s;cursor:grab;z-index:2}
+.d-knob{touch-action:none;position:absolute;left:50%;top:50%;width:46px;height:46px;margin:-23px 0 0 -23px;border-radius:50%;border:3px solid #fff;padding:0;transform:rotate(var(--ang,210deg)) translateY(calc(var(--r,150px) * -1)) rotate(calc(var(--ang,210deg) * -1));transition:transform .45s cubic-bezier(.2,.8,.2,1),background .5s,box-shadow .5s;cursor:grab;z-index:2}
 .d-knob.sun{background:#FFD43B;box-shadow:0 0 0 10px rgba(255,212,59,.22),0 0 60px 14px rgba(255,212,59,.55)}
 .d-knob.moon{background:#F4F1E6;box-shadow:inset -11px -5px 0 #CFC9B4,0 0 50px 10px rgba(255,255,255,.28)}
 .dialw.drag .d-knob{transition:background .5s,box-shadow .5s;cursor:grabbing}
@@ -1220,7 +1220,10 @@ const ABORT = Symbol('abort');
 let run = 0, auto = true, armed = false, pending = null, autoTimer = 0;
 
 function esc(s) { return s.replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c])); }
-function scrollMsgs() { msgs.scrollTop = msgs.scrollHeight; }
+let msgsTouch = false;
+msgs.addEventListener('touchstart', () => { msgsTouch = true; }, { passive: true });
+msgs.addEventListener('touchend', () => { setTimeout(() => { msgsTouch = false; }, 600); }, { passive: true });
+function scrollMsgs() { if (!msgsTouch) msgs.scrollTop = msgs.scrollHeight; }
 function add(who, html) {
   const d = document.createElement('div'); d.className = 'msg ' + who;
   d.innerHTML = who.startsWith('bot') ? `<span class="mini">${face('listen')}</span><div class="txt">${html}</div>` : html;
@@ -1477,6 +1480,7 @@ dialw.addEventListener('pointerdown', e => {
   if (e.target.closest('.d-play')) return;
   const r = dialw.getBoundingClientRect(), d = Math.hypot(e.clientX - (r.left + r.width / 2), e.clientY - (r.top + r.height / 2));
   if (d < r.width * .25 && !e.target.closest('.d-knob')) return;
+  if (e.pointerType !== 'mouse' && !e.target.closest('.d-knob')) { if (e.target.closest('.bar')) { if (lapse) setLapse(false); setHour(+e.target.closest('.bar').dataset.h); } return; }
   dragging = true; dialw.classList.add('drag'); dialw.setPointerCapture(e.pointerId);
   if (lapse) setLapse(false);
   setHour(hourAt(e)); e.preventDefault();
