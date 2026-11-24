@@ -455,13 +455,51 @@ details p{padding:0 48px 24px 0;color:var(--ink-2);max-width:62ch}
 @media (max-width:860px){.faq-grid{grid-template-columns:1fr}.faq-l{position:static}}
 
 /* Compare */
-.cmp{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 40px;margin-top:40px}
-.cmp a{display:grid;gap:4px;padding:20px 0;border-top:1px solid var(--line);text-decoration:none;align-items:center}
-.cmp a b{font-family:var(--display);font-size:20px;font-weight:600;letter-spacing:-.01em}
-.cmp a b span{color:var(--ink-3);font-weight:500}
-.cmp a small{grid-column:1;color:var(--ink-2);font-size:14px}
-.cmp a:hover b{text-decoration:underline;text-underline-offset:4px;text-decoration-thickness:2px;text-decoration-color:var(--lime-deep)}
-@media (max-width:760px){.cmp{grid-template-columns:1fr}}
+.cmp-card{margin-top:48px;background:var(--card);border:1px solid var(--line);border-radius:28px;padding:12px 12px 4px;box-shadow:0 30px 60px -40px rgba(12,29,42,.35)}
+.cmp-scroll{position:relative;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:thin}
+.cmp-t{width:100%;min-width:820px;border-collapse:separate;border-spacing:0;font-size:15px}
+.cmp-t th,.cmp-t td{padding:16px 14px;text-align:center;vertical-align:middle;border-bottom:1px solid var(--line)}
+.cmp-t tbody tr:last-child td,.cmp-t tbody tr:last-child th{border-bottom:0}
+.cmp-t thead th{border-bottom:1px solid var(--line);padding-top:22px;padding-bottom:18px;vertical-align:bottom}
+.cmp-t thead th b{display:block;font-family:var(--display);font-size:18px;font-weight:600;letter-spacing:-.01em;color:var(--ink)}
+.cmp-t thead th small{display:block;font-size:13px;font-weight:400;color:var(--ink-3);margin-top:2px}
+.cmp-t tbody th{text-align:left;font-weight:500;color:var(--ink);width:30%;padding-left:18px}
+.cmp-t th:first-child,.cmp-t td:first-child{position:sticky;left:0;z-index:1;background:var(--card)}
+.cmp-t tbody tr{transition:background-color .15s ease-out}
+.cmp-t tbody tr:hover th,.cmp-t tbody tr:hover td:not(.s){background:var(--mist)}
+.cmp-t .s{background:var(--lime);border-bottom-color:rgba(12,29,42,.12);color:var(--ink);font-weight:600;width:16%}
+.cmp-t thead .s{border-radius:20px 20px 0 0;padding-top:18px}
+.cmp-t tbody tr:last-child .s{border-radius:0 0 20px 20px}
+.cmp-t thead .s .av{display:block;width:40px;height:40px;margin:0 auto 10px}
+.cmp-t thead .s small{color:#3E4A00}
+.ic{display:inline-grid;place-items:center;width:28px;height:28px;border-radius:50%}
+.ic svg{display:block}
+.ic.yes{background:var(--ink);color:var(--lime)}
+.ic.ok{background:var(--sky-soft);color:var(--sky-deep)}
+.ic.no{width:auto;height:auto;color:#B3BFC8;font-weight:500}
+.part{display:inline-block;font-size:13px;color:var(--ink-2);background:var(--mist);border-radius:999px;padding:4px 11px;white-space:nowrap}
+.cmp-t .s .txt{font-size:14px}
+.cmp-t td.plain{font-size:14px;color:var(--ink-2)}
+.cmp-in .s .ic.yes{transform:scale(.4);opacity:.3}
+.cmp-in.go .s .ic.yes{transform:none;opacity:1;transition:transform .35s cubic-bezier(.2,.8,.2,1),opacity .2s ease-out}
+.guides{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin-top:28px}
+.guides span{font-size:15px;color:var(--ink-2);margin-right:4px}
+.guides a{display:inline-flex;align-items:center;height:40px;padding:0 16px;border-radius:999px;border:1px solid var(--line);background:var(--card);font-size:14px;font-weight:500;text-decoration:none;transition:background-color .15s ease-out,border-color .15s ease-out}
+.guides a:hover{border-color:var(--ink);background:var(--lime)}
+.cmp-pick{display:none}
+@media (max-width:760px){
+  .cmp-card{border-radius:20px;padding:6px 6px 0}
+  .cmp-pick{display:flex;flex-wrap:wrap;gap:6px;margin:24px 0 -28px}
+  .cmp-pick button{height:38px;padding:0 14px;border-radius:999px;border:1px solid var(--line);background:var(--card);font-size:14px;font-weight:500;color:var(--ink-2)}
+  .cmp-pick button[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:var(--paper)}
+  .cmp-t{min-width:0;font-size:14px}
+  .cmp-t th:first-child,.cmp-t td:first-child{position:static}
+  .cmp-t tbody th{width:auto;padding-left:12px}
+  .cmp-t th,.cmp-t td{padding:14px 8px}
+  .cmp-t .s,.cmp-t tr>:nth-child(n+3){width:27%}
+  .cmp-t tr>:nth-child(n+3){display:none}
+  .cmp-t.pick-1 tr>:nth-child(3),.cmp-t.pick-2 tr>:nth-child(4),.cmp-t.pick-3 tr>:nth-child(5),.cmp-t.pick-4 tr>:nth-child(6){display:table-cell}
+}
 
 /* Final CTA */
 .final{background:linear-gradient(180deg,var(--sky) 0%,#8ED2F6 48%,var(--lime) 100%);position:relative;overflow:hidden;text-align:center}
@@ -853,18 +891,36 @@ footer{background:var(--paper);padding-block:72px 40px}
 <section class="sec" id="compare" style="padding-top:0">
   <div class="wrap">
     <div class="sec-head">
-            <h2>Compare Sonar</h2>
+      <h2>How Sonar compares</h2>
+      <p class="lede">What happens to a new visitor with Sonar, and with the tools teams usually reach for instead.</p>
     </div>
-    <div class="cmp">
-      <a href="#faq"><b>Sonar <span>vs</span> Static contact forms</b><small>Forms collect a name. Sonar finds out why they came.</small></a>
-      <a href="#faq"><b>Sonar <span>vs</span> Rule-based chatbots</b><small>Decision trees vs. follow-up questions that adapt.</small></a>
-      <a href="#faq"><b>Sonar <span>vs</span> Intercom Fin</b><small>Support-first answers vs. sales-first discovery.</small></a>
-      <a href="#faq"><b>Sonar <span>vs</span> Drift</b><small>Conversational routing vs. consultative diagnosis.</small></a>
-      <a href="#faq"><b>Sonar <span>vs</span> HubSpot Chatflows</b><small>Scripted flows vs. an agent that reasons.</small></a>
-      <a href="#faq"><b>Sonar <span>vs</span> Qualified</b><small>Enterprise pipeline suites vs. one-script setup.</small></a>
-      <a href="#faq"><b>Sonar <span>vs</span> Typeform</b><small>Fixed questions vs. a conversation that listens.</small></a>
-      <a href="#faq"><b>All comparisons</b><small>Side-by-side guides for every tool on your shortlist.</small></a>
+    <div class="cmp-pick" id="cmpPick" aria-label="Compare Sonar with"><button type="button" aria-pressed="true" data-p="1">Contact form</button><button type="button" aria-pressed="false" data-p="2">Chatbot</button><button type="button" aria-pressed="false" data-p="3">Support AI</button><button type="button" aria-pressed="false" data-p="4">Booking link</button></div>
+    <div class="cmp-card">
+      <div class="cmp-scroll">
+        <table class="cmp-t cmp-in pick-1" id="cmpT">
+          <caption class="sr">Sonar compared with contact forms, rule-based chatbots, support AI agents and booking links</caption>
+          <thead><tr>
+            <th scope="col"><span class="sr">Capability</span></th>
+            <th scope="col" class="s"><span class="av" data-face></span><b>Sonar</b><small>Consultative agent</small></th>
+            <th scope="col"><b>Contact form</b><small>Static forms, Typeform</small></th>
+            <th scope="col"><b>Rule-based chatbot</b><small>Decision-tree builders</small></th>
+            <th scope="col"><b>Support AI agent</b><small>Help-desk bots</small></th>
+            <th scope="col"><b>Booking link</b><small>A calendar link</small></th>
+          </tr></thead>
+          <tbody>
+          <tr><th scope="row">Replies the moment a visitor lands</th><td class="s"><span class="ic yes"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7"/></svg><span class="sr">Yes</span></span></td><td><span class="ic no" aria-label="No">—</span></td><td><span class="ic ok"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7"/></svg><span class="sr">Yes</span></span></td><td><span class="ic ok"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7"/></svg><span class="sr">Yes</span></span></td><td><span class="ic no" aria-label="No">—</span></td></tr>
+          <tr><th scope="row">Asks follow-up questions that adapt</th><td class="s"><span class="ic yes"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7"/></svg><span class="sr">Yes</span></span></td><td><span class="ic no" aria-label="No">—</span></td><td><span class="part">Scripted</span></td><td><span class="ic ok"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7"/></svg><span class="sr">Yes</span></span></td><td><span class="ic no" aria-label="No">—</span></td></tr>
+          <tr><th scope="row">Finds the bottleneck in their funnel</th><td class="s"><span class="ic yes"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7"/></svg><span class="sr">Yes</span></span></td><td><span class="ic no" aria-label="No">—</span></td><td><span class="ic no" aria-label="No">—</span></td><td><span class="ic no" aria-label="No">—</span></td><td><span class="ic no" aria-label="No">—</span></td></tr>
+          <tr><th scope="row">Scores fit against your ICP</th><td class="s"><span class="ic yes"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7"/></svg><span class="sr">Yes</span></span></td><td><span class="part">Manual review</span></td><td><span class="part">Fixed rules</span></td><td><span class="ic no" aria-label="No">—</span></td><td><span class="ic no" aria-label="No">—</span></td></tr>
+          <tr><th scope="row">Books the call on your calendar</th><td class="s"><span class="ic yes"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7"/></svg><span class="sr">Yes</span></span></td><td><span class="ic no" aria-label="No">—</span></td><td><span class="part">Sends a link</span></td><td><span class="part">Sends a link</span></td><td><span class="ic ok"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7"/></svg><span class="sr">Yes</span></span></td></tr>
+          <tr><th scope="row">Briefs your rep before the call</th><td class="s"><span class="ic yes"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7"/></svg><span class="sr">Yes</span></span></td><td><span class="part">Form fields</span></td><td><span class="part">Transcript</span></td><td><span class="part">Transcript</span></td><td><span class="ic no" aria-label="No">—</span></td></tr>
+          <tr><th scope="row">Keeps context across web, WhatsApp and email</th><td class="s"><span class="ic yes"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7"/></svg><span class="sr">Yes</span></span></td><td><span class="ic no" aria-label="No">—</span></td><td><span class="ic no" aria-label="No">—</span></td><td><span class="part">Some channels</span></td><td><span class="ic no" aria-label="No">—</span></td></tr>
+          <tr><th scope="row">Setup</th><td class="s"><span class="txt">One script tag</span></td><td class="plain">Minutes</td><td class="plain">Days of flow building</td><td class="plain">Help-center import</td><td class="plain">Minutes</td></tr>
+          </tbody>
+        </table>
+      </div>
     </div>
+    <div class="guides"><span>Comparing a specific tool?</span><a href="#faq">Sonar vs Intercom Fin</a><a href="#faq">Sonar vs Drift</a><a href="#faq">Sonar vs HubSpot Chatflows</a><a href="#faq">Sonar vs Qualified</a><a href="#faq">Sonar vs Typeform</a></div>
   </div>
 </section>
 
@@ -1340,6 +1396,15 @@ $$('#faces .face').forEach(f => {
 $$('#trio button').forEach(b => b.addEventListener('click', () => {
   const m = b.querySelector('.sav'), prev = m.dataset.mood; m.dataset.mood = 'found';
   setTimeout(() => m.dataset.mood = prev, 1400);
+}));
+
+/* ---------- Compare: Sonar's column fills in once, when the table scrolls into view ---------- */
+const cmpT = $('#cmpT');
+if (reduce) cmpT.classList.add('go');
+else new IntersectionObserver((en, ob) => { if (en[0].isIntersecting) { $$('.s .ic.yes', cmpT).forEach((ic, i) => ic.style.transitionDelay = (i * 70) + 'ms'); cmpT.classList.add('go'); ob.disconnect(); } }, { threshold: .15 }).observe(cmpT);
+$$('#cmpPick button').forEach(b => b.addEventListener('click', () => {
+  $$('#cmpPick button').forEach(x => x.setAttribute('aria-pressed', String(x === b)));
+  cmpT.className = cmpT.className.replace(/pick-\d/, 'pick-' + b.dataset.p);
 }));
 
 /* ---------- Teams slider ---------- */
