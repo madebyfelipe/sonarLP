@@ -532,9 +532,9 @@ footer{background:var(--paper);padding-block:72px 40px}
 
 /* Custom cursor: brand arrow (native cursor, no lag) + a small ping on click */
 @media (hover:hover) and (pointer:fine){
-  html,body{cursor:url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 28 28"%3E%3Cpath d="M4 2.5v20.2l5.6-5.4 3.6 8.2 3.6-1.6-3.5-8h7.9z" fill="%23D6FF25" stroke="%230C1D2A" stroke-width="2" stroke-linejoin="round"/%3E%3C/svg%3E') 4 3,auto}
-  a,button,summary,label,[role="tab"],[role="switch"],.face,.peek,select{cursor:url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 28 28"%3E%3Cpath d="M4 2.5v20.2l5.6-5.4 3.6 8.2 3.6-1.6-3.5-8h7.9z" fill="%230C1D2A" stroke="%23D6FF25" stroke-width="2" stroke-linejoin="round"/%3E%3C/svg%3E') 4 3,pointer}
-  input[type="range"]{cursor:url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 28 28"%3E%3Cpath d="M4 2.5v20.2l5.6-5.4 3.6 8.2 3.6-1.6-3.5-8h7.9z" fill="%230C1D2A" stroke="%23D6FF25" stroke-width="2" stroke-linejoin="round"/%3E%3C/svg%3E') 4 3,grab}
+  html,body{cursor:url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 28 28"%3E%3Cpath d="M4 4L24.5 11.6L14.8 14.8L11.6 24.5Z" fill="%23D6FF25" stroke="%230C1D2A" stroke-width="2" stroke-linejoin="round"/%3E%3C/svg%3E') 4 4,auto}
+  a,button,summary,label,[role="tab"],[role="switch"],.face,.peek,select{cursor:url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 28 28"%3E%3Cpath d="M4 4L24.5 11.6L14.8 14.8L11.6 24.5Z" fill="%230C1D2A" stroke="%23D6FF25" stroke-width="2" stroke-linejoin="round"/%3E%3C/svg%3E') 4 4,pointer}
+  input[type="range"]{cursor:url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 28 28"%3E%3Cpath d="M4 4L24.5 11.6L14.8 14.8L11.6 24.5Z" fill="%230C1D2A" stroke="%23D6FF25" stroke-width="2" stroke-linejoin="round"/%3E%3C/svg%3E') 4 4,grab}
   input[type="text"],textarea{cursor:text}
 }
 .cur-ping{position:fixed;width:18px;height:18px;margin:-9px 0 0 -9px;border-radius:50%;border:1.5px solid #fff;mix-blend-mode:difference;pointer-events:none;z-index:299;animation:curping .65s cubic-bezier(.2,.6,.3,1) forwards}
