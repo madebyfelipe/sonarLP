@@ -15,7 +15,7 @@
   --sky:#36AEED; --sky-deep:#1478B8; --sky-soft:#E3F3FC;
   --lime:#D6FF25; --lime-deep:#A9D000;
   --paper:#FAFAFA; --card:#FFFFFF; --mist:#F0F4F7;
-  --ink:#0C1D2A; --ink-2:#465867; --ink-3:#8496A3; --line:#E1E7EC;
+  --ink:#0C1D2A; --ink-2:#465867; --ink-3:#627482; --line:#E1E7EC;
   --coral:#FF6A3D; --violet:#7C6CFF; --pink:#FFB8DC; --sun:#FFD43B; --mint:#4FE0B0;
   --display:"Bricolage Grotesque","Arial Black",system-ui,sans-serif;
   --body:"Geist",system-ui,-apple-system,"Segoe UI",sans-serif;
@@ -32,6 +32,12 @@ a{color:inherit}
 button{font:inherit;color:inherit;cursor:pointer}
 :focus-visible{outline:3px solid var(--sky-deep);outline-offset:3px;border-radius:8px}
 [hidden]{display:none!important}
+::selection{background:var(--lime);color:var(--ink)}
+input{caret-color:var(--sky-deep)}
+html{scrollbar-color:#B9C5CE var(--paper)}
+a{text-underline-offset:3px}
+.skip{position:fixed;left:16px;top:-60px;z-index:200;background:var(--ink);color:var(--paper);padding:10px 16px;border-radius:10px;font-weight:600;text-decoration:none}
+.skip:focus{top:calc(12px + env(safe-area-inset-top,0px))}
 .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 .wrap{max-width:1200px;margin:0 auto;padding-left:max(20px,env(safe-area-inset-left,0px));padding-right:max(20px,env(safe-area-inset-right,0px))}
 section{scroll-margin-top:72px}
@@ -39,19 +45,16 @@ h1,h2,h3{font-family:var(--display);font-weight:700;letter-spacing:-.025em;line-
 h2{font-size:clamp(36px,5.2vw,64px)}
 h3{font-size:clamp(22px,2.2vw,28px);letter-spacing:-.015em;line-height:1.1}
 p{margin:0}
-.eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-2)}
+.plan{font-size:16px;font-weight:600}
 .lede{font-size:clamp(17px,1.5vw,19px);color:var(--ink-2);max-width:60ch}
 
 /* Buttons */
-.btn{display:inline-flex;align-items:center;gap:10px;height:50px;padding:0 22px;border-radius:999px;border:0;font-weight:600;font-size:15.5px;text-decoration:none;transition:transform .2s cubic-bezier(.3,1.6,.5,1),box-shadow .2s,background .2s;white-space:nowrap}
-.btn:hover{transform:translateY(-2px)}
-.btn:active{transform:translateY(0) scale(.98)}
-.btn .arr{transition:transform .2s}
-.btn:hover .arr{transform:translateX(3px)}
-.btn-lime{background:var(--lime);color:var(--ink);box-shadow:0 10px 30px -10px rgba(170,210,0,.9),inset 0 -2px 0 rgba(0,0,0,.08)}
-.btn-lime:hover{box-shadow:0 16px 36px -10px rgba(170,210,0,1),inset 0 -2px 0 rgba(0,0,0,.08)}
-.btn-glass{background:rgba(255,255,255,.18);color:#fff;border:1px solid rgba(255,255,255,.45);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
-.btn-glass:hover{background:rgba(255,255,255,.28)}
+.btn{display:inline-flex;align-items:center;gap:10px;height:50px;padding:0 24px;border-radius:999px;border:0;font-weight:600;font-size:16px;text-decoration:none;transition:transform .15s ease-out,background-color .15s ease-out,color .15s ease-out;white-space:nowrap;touch-action:manipulation}
+.btn:active{transform:scale(.98)}
+.btn-lime{background:var(--lime);color:var(--ink);box-shadow:0 1px 2px rgba(12,29,42,.14),0 8px 18px -10px rgba(12,29,42,.45)}
+.btn-lime:hover{background:#E1FF5C}
+.btn-ghost{background:transparent;color:#fff;border:1.5px solid rgba(255,255,255,.85)}
+.btn-ghost:hover{background:rgba(255,255,255,.14)}
 .btn-ink{background:var(--ink);color:var(--paper)}
 .btn-line{background:transparent;color:var(--ink);border:1.5px solid var(--ink)}
 .btn-line:hover{background:var(--ink);color:var(--paper)}
@@ -79,16 +82,22 @@ p{margin:0}
 
 /* Hero */
 .hero{position:relative;overflow:hidden;overflow:clip;color:#fff;background:var(--sky);isolation:isolate}
-.hero-sky{position:absolute;inset:-4% -4% 0;background:var(--sky) url("assets/sky.jpg") center bottom/cover no-repeat;z-index:-2;transform:translate3d(var(--px,0),var(--py,0),0) scale(1.04);transition:transform .6s cubic-bezier(.2,.7,.2,1)}
+.hero-sky{position:absolute;inset:-4% -4% 0;background:linear-gradient(180deg,rgba(4,48,104,.42) 0%,rgba(4,48,104,.22) 32%,rgba(4,48,104,0) 55%),var(--sky) url("assets/sky.jpg") center bottom/cover no-repeat;z-index:-2;transform:translate3d(var(--px,0),var(--py,0),0) scale(1.04);transition:transform .6s cubic-bezier(.2,.7,.2,1)}
 .hero::after{content:"";position:absolute;inset:auto 0 0;height:260px;background:linear-gradient(180deg,rgba(250,250,250,0),var(--paper) 88%);z-index:-1;pointer-events:none}
 .hero-in{padding-top:calc(var(--nav-h) + env(safe-area-inset-top,0px) + 64px);padding-bottom:72px;display:flex;flex-direction:column;align-items:center;text-align:center}
 .badge{display:inline-flex;align-items:center;gap:10px;padding:6px 14px 6px 6px;border-radius:999px;background:rgba(255,255,255,.2);border:1px solid rgba(255,255,255,.4);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);font-size:13.5px;font-weight:500}
 .badge b{background:var(--lime);color:var(--ink);font-family:var(--mono);font-size:11px;letter-spacing:.08em;padding:4px 9px;border-radius:999px}
-.hero h1{margin-top:28px;font-size:clamp(54px,10vw,128px);font-weight:700;letter-spacing:-.045em;display:flex;align-items:center;justify-content:center;gap:.24em;flex-wrap:wrap;text-shadow:0 4px 40px rgba(10,60,110,.25)}
-.hero h1 .wm{height:.74em;width:auto;aspect-ratio:916/188;display:block;overflow:visible;filter:drop-shadow(0 4px 30px rgba(10,60,110,.25))}
+.hero h1{margin-top:0;font-size:clamp(54px,9vw,96px);font-weight:700;letter-spacing:-.04em;display:flex;align-items:center;justify-content:center;gap:.24em;flex-wrap:wrap;text-shadow:0 2px 10px rgba(5,40,90,.22)}
+.hero h1 .wm{height:.74em;width:auto;aspect-ratio:916/188;display:block;overflow:visible;filter:drop-shadow(0 2px 10px rgba(5,40,90,.22))}
 .hero h1 .wm .letters{fill:#fff}
-.hero h1 .wm .pupil{fill:var(--lime);transition:transform .25s cubic-bezier(.2,.8,.2,1)}
-.hero .sub{margin-top:24px;max-width:640px;font-size:clamp(17px,1.7vw,20px);line-height:1.5;color:rgba(255,255,255,.95);text-shadow:0 1px 18px rgba(10,60,110,.3)}
+.hero h1 .wm .pupil{fill:var(--lime);transition:transform .25s ease-out}
+.o-scope circle{fill:none;stroke:#fff;stroke-opacity:.4;stroke-width:2.5}
+.o-sweep{fill:#fff;transform-box:view-box;transform-origin:279px 94px;animation:spin 3.2s linear infinite}
+.o-sweep line{stroke:#fff;stroke-width:3;stroke-linecap:round}
+.sonar-cv{position:absolute;inset:0;width:100%;height:100%;z-index:-1;pointer-events:none}
+.hero{cursor:crosshair}
+.hero .demo{cursor:auto}
+.hero .sub{margin-top:24px;max-width:640px;font-size:clamp(17px,1.7vw,20px);line-height:1.5;color:#fff;text-shadow:0 1px 3px rgba(5,40,90,.3)}
 .hero-ctas{margin-top:34px;display:flex;gap:12px;flex-wrap:wrap;justify-content:center}
 .hero-note{margin-top:18px;font-family:var(--mono);font-size:12.5px;letter-spacing:.02em;color:rgba(255,255,255,.88)}
 .hero-note span{opacity:.6;margin:0 8px}
@@ -98,8 +107,8 @@ p{margin:0}
 .demo-cap{font-family:var(--mono);font-size:12px;letter-spacing:.06em;color:rgba(255,255,255,.9);text-align:center;margin-bottom:14px}
 .demo-grid{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:20px;align-items:start}
 .stage{position:relative;padding-top:40px}
-.peek{position:absolute;top:-6px;right:56px;width:92px;height:92px;z-index:0;border:0;background:none;padding:0;transition:transform .35s cubic-bezier(.3,1.6,.5,1)}
-.peek:hover{transform:translateY(-8px) rotate(-4deg)}
+.peek{position:absolute;top:-6px;right:56px;width:92px;height:92px;z-index:0;border:0;background:none;padding:0;transition:transform .2s ease-out}
+.peek:hover{transform:translateY(-6px)}
 .peek .bubble{position:absolute;right:100%;top:6px;margin-right:8px;background:var(--card);color:var(--ink);font-size:13px;font-weight:600;padding:8px 12px;border-radius:14px 14px 4px 14px;white-space:nowrap;box-shadow:0 10px 30px -10px rgba(12,29,42,.4);opacity:0;transform:translateY(6px) scale(.95);transition:.25s;pointer-events:none}
 .peek.talk .bubble{opacity:1;transform:none}
 .browser{position:relative;z-index:1;background:var(--card);border-radius:var(--r-lg);box-shadow:var(--shadow);overflow:hidden;border:1px solid rgba(255,255,255,.7)}
@@ -132,9 +141,9 @@ p{margin:0}
 .w-head small{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--ink-2)}
 .live-dot{width:7px;height:7px;border-radius:50%;background:#3CCB6C;box-shadow:0 0 0 0 rgba(60,203,108,.6);animation:live 2s infinite}
 @keyframes live{70%{box-shadow:0 0 0 7px rgba(60,203,108,0)}100%{box-shadow:0 0 0 0 rgba(60,203,108,0)}}
-.w-head .replay{margin-left:auto;border:1px solid var(--line);background:#fff;border-radius:999px;height:30px;padding:0 12px;font-size:12px;font-weight:600;color:var(--ink-2)}
+.w-head .replay{margin-left:auto;display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);background:#fff;border-radius:999px;height:36px;padding:0 14px;font-size:12px;font-weight:600;color:var(--ink-2)}
 .w-head .replay:hover{border-color:var(--ink);color:var(--ink)}
-.msgs{flex:1 1 auto;min-height:0;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:10px;scroll-behavior:smooth;overscroll-behavior:contain}
+.msgs{flex:1 1 auto;min-height:0;overflow-y:auto;scrollbar-width:thin;scrollbar-color:#CBD5DC transparent;padding:16px;display:flex;flex-direction:column;gap:10px;scroll-behavior:smooth;overscroll-behavior:contain}
 .msg{max-width:86%;font-size:14px;line-height:1.45;animation:pop .35s cubic-bezier(.3,1.4,.5,1) both}
 @keyframes pop{from{transform:translateY(8px) scale(.96);opacity:.0}to{transform:none;opacity:1}}
 .msg.bot{display:flex;gap:8px;align-items:flex-end}
@@ -148,7 +157,7 @@ p{margin:0}
 .typing .txt i:nth-child(2){animation-delay:.15s}.typing .txt i:nth-child(3){animation-delay:.3s}
 @keyframes dots{0%,60%,100%{transform:none;opacity:.5}30%{transform:translateY(-4px);opacity:1}}
 .chips{display:flex;flex-wrap:wrap;gap:6px;padding:0 16px 12px;flex:none}
-.chip{border:1.5px solid var(--sky);color:var(--sky-deep);background:#fff;border-radius:999px;padding:7px 12px;font-size:13px;font-weight:600;transition:background .15s,transform .15s;animation:pop .3s both}
+.chip{min-height:36px;border:1.5px solid var(--sky);color:var(--sky-deep);background:#fff;border-radius:999px;padding:7px 13px;font-size:13px;font-weight:600;transition:background .15s,transform .15s;animation:pop .3s both}
 .chip:hover,.chip.press{background:var(--sky);color:#fff}
 .chip.press{transform:scale(.95)}
 .w-input{display:flex;gap:8px;padding:12px 16px 16px;border-top:1px solid var(--line)}
@@ -156,14 +165,16 @@ p{margin:0}
 .w-input input:focus{outline:none;border-color:var(--sky);background:#fff}
 .w-input button{width:42px;height:42px;border-radius:50%;border:0;background:var(--ink);color:#fff;display:grid;place-items:center;flex:none}
 .w-input button:hover{background:var(--sky-deep)}
-.powered{font-family:var(--mono);font-size:10.5px;color:var(--ink-3);text-align:center;padding:0 0 10px}
+.powered{font-size:12px;color:var(--ink-3);text-align:center;padding:0 0 10px}
 
 /* Diagnosis panel */
-.dx{background:rgba(255,255,255,.94);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-radius:var(--r-lg);box-shadow:var(--shadow);padding:20px;margin-top:40px;border:1px solid rgba(255,255,255,.8)}
+.dx{background:var(--card);border-radius:var(--r-lg);box-shadow:var(--shadow);padding:20px;margin-top:40px;border:1px solid rgba(255,255,255,.8)}
 .dx-h{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
 .dx-h b{font-family:var(--display);font-size:18px;letter-spacing:-.01em}
-.dx-h .rec{display:flex;align-items:center;gap:6px;font-family:var(--mono);font-size:11px;color:var(--coral)}
-.dx-h .rec i{width:7px;height:7px;border-radius:50%;background:var(--coral);animation:blinkdot 1.2s infinite}
+.dx-h .rec{display:flex;align-items:center;gap:6px;font-size:13px;font-weight:500;color:var(--sky-deep)}
+.dx-h .rec.done{color:#4F6100}
+.dx-h .rec.done i{animation:none;background:var(--lime-deep)}
+.dx-h .rec i{width:7px;height:7px;border-radius:50%;background:var(--sky);animation:blinkdot 1.2s infinite}
 @keyframes blinkdot{50%{opacity:.25}}
 .dx-row{display:flex;justify-content:space-between;gap:12px;padding:9px 0;border-top:1px solid var(--line);font-size:13px}
 .dx-row span{color:var(--ink-2)}
@@ -196,12 +207,10 @@ p{margin:0}
 @media (max-width:860px){.b-body{grid-template-columns:1fr}.site{display:none}.peek{right:24px}}
 
 /* Marquee strip */
-.strip{padding:28px 0 8px;overflow:hidden}
-.strip p{text-align:center;font-family:var(--mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3);margin-bottom:18px}
-.marquee{display:flex;width:max-content;animation:marq 38s linear infinite}
-.marquee:hover{animation-play-state:paused}
-.marquee span{font-family:var(--display);font-weight:700;font-size:26px;letter-spacing:-.02em;color:#B7C3CC;padding:0 28px;white-space:nowrap}
-@keyframes marq{to{transform:translateX(-50%)}}
+.strip{padding:32px 0 8px}
+.strip p{text-align:center;font-size:15px;color:var(--ink-2);margin-bottom:16px}
+.tools{display:flex;flex-wrap:wrap;justify-content:center;gap:6px 30px}
+.tools span{font-family:var(--display);font-weight:600;font-size:22px;letter-spacing:-.02em;color:var(--ink-3)}
 
 /* Section scaffolding */
 .sec{padding-block:clamp(80px,10vw,128px)}
@@ -211,7 +220,6 @@ p{margin:0}
 /* 24/7 */
 .clock{--top:#0A1330;--bot:#1D2E5C;background:linear-gradient(180deg,var(--top),var(--bot));color:#fff;transition:color .5s;position:relative;overflow:hidden;overflow:clip}
 .clock.day{color:var(--ink)}
-.clock .eyebrow{color:inherit;opacity:.75}
 .clock .lede{color:inherit;opacity:.85}
 .stars{position:absolute;inset:0;pointer-events:none;transition:opacity .6s;background-image:radial-gradient(1.5px 1.5px at 10% 20%,#fff 50%,transparent 51%),radial-gradient(1px 1px at 30% 70%,#fff 50%,transparent 51%),radial-gradient(1.5px 1.5px at 55% 30%,#fff 50%,transparent 51%),radial-gradient(1px 1px at 75% 15%,#fff 50%,transparent 51%),radial-gradient(1.2px 1.2px at 90% 60%,#fff 50%,transparent 51%),radial-gradient(1px 1px at 45% 85%,#fff 50%,transparent 51%),radial-gradient(1.4px 1.4px at 20% 50%,#fff 50%,transparent 51%),radial-gradient(1px 1px at 65% 55%,#fff 50%,transparent 51%)}
 .clock-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.05fr);gap:56px;align-items:center;position:relative}
@@ -237,6 +245,7 @@ p{margin:0}
 .stats{display:grid;grid-template-columns:repeat(3,1fr);border-bottom:1px solid var(--line)}
 .stats div{padding:16px 20px;border-right:1px solid var(--line)}
 .stats div:last-child{border-right:0}
+.stats div:last-child strong{color:var(--sky-deep)}
 .stats strong{display:block;font-family:var(--display);font-size:34px;letter-spacing:-.03em;font-variant-numeric:tabular-nums;line-height:1}
 .stats span{font-size:12px;color:var(--ink-2)}
 .feed ul{list-style:none;margin:0;padding:6px 0}
@@ -245,9 +254,9 @@ p{margin:0}
 .feed li time{font-family:var(--mono);font-size:12px;color:var(--ink-3);font-variant-numeric:tabular-nums}
 .feed li b{display:block;font-size:14px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .feed li small{display:block;font-size:12px;color:var(--ink-2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.pill{font-family:var(--mono);font-size:11px;padding:4px 9px;border-radius:999px;background:var(--mist);color:var(--ink-2);white-space:nowrap}
+.pill{font-family:var(--mono);font-size:12px;padding:4px 9px;border-radius:999px;background:var(--mist);color:var(--ink-2);white-space:nowrap}
 .pill.ok{background:#F0FFC2;color:#3D4D00}
-.example{font-family:var(--mono);font-size:11px;color:var(--ink-3);padding:10px 20px 14px;border-top:1px solid var(--line)}
+.example{font-size:12px;color:var(--ink-3);padding:10px 20px 14px;border-top:1px solid var(--line)}
 @media (max-width:900px){.clock-grid{grid-template-columns:1fr;gap:40px}}
 @media (max-width:520px){.dial-top{flex-wrap:wrap}.status{text-align:left}}
 
@@ -264,7 +273,8 @@ p{margin:0}
 .tab .prog{height:3px;border-radius:2px;background:var(--mist);overflow:hidden;margin-top:8px;display:none}
 .tab.on .prog{display:block}
 .tab .prog i{display:block;height:100%;width:0;background:var(--sky)}
-.feats.playing .tab.on .prog i{animation:prog 7s linear forwards}
+.feats.playing:not(.manual) .tab.on .prog i{animation:prog 7s linear forwards}
+.feats.manual .tab .prog{display:none}
 .feats .tabs:hover .tab.on .prog i,.feats.hold .tab.on .prog i{animation-play-state:paused}
 @keyframes prog{to{width:100%}}
 .screen{position:relative;border-radius:var(--r-lg);background:var(--sky);min-height:520px;overflow:hidden;isolation:isolate}
@@ -304,7 +314,7 @@ p{margin:0}
 .tree div{display:flex;align-items:center;gap:8px;padding:6px 8px;border-radius:8px}
 .tree div:hover{background:var(--mist)}
 .tree .ind{padding-left:28px}
-.tree em{margin-left:auto;font-style:normal;font-size:10.5px;color:var(--ink-3)}
+.tree em{margin-left:auto;font-style:normal;font-size:12px;color:var(--ink-3)}
 .guard{display:grid;gap:8px;border-top:1px solid var(--line);padding-top:12px}
 .sw{display:flex;align-items:center;gap:12px;font-size:13px;background:none;border:0;padding:4px 0;text-align:left;width:100%}
 .sw i{width:36px;height:21px;border-radius:999px;background:#CDD6DC;position:relative;flex:none;transition:background .2s}
@@ -324,7 +334,7 @@ p{margin:0}
 .approve{margin-top:4px}
 /* channels */
 .seg{display:flex;background:var(--mist);border-radius:999px;padding:4px;gap:4px}
-.seg button{flex:1;border:0;background:transparent;border-radius:999px;height:32px;font-size:12.5px;font-weight:600;color:var(--ink-2)}
+.seg button{flex:1;border:0;background:transparent;border-radius:999px;height:36px;font-size:12.5px;font-weight:600;color:var(--ink-2)}
 .seg button[aria-selected="true"]{background:#fff;color:var(--ink);box-shadow:0 2px 6px rgba(12,29,42,.12)}
 .chan{display:none;gap:8px}
 .chan.on{display:grid;animation:pop .35s both}
@@ -335,9 +345,9 @@ p{margin:0}
 .chan.wa{background:#EAF6EE;border-radius:12px;padding:12px}
 .chan.wa .bub.u{background:#D7F8C8;color:var(--ink)}
 .mail{border:1px solid var(--line);border-radius:12px;padding:12px;font-size:13px}
-.mail small{display:block;font-family:var(--mono);font-size:11px;color:var(--ink-3);margin-bottom:6px}
+.mail small{display:block;font-family:var(--mono);font-size:12px;color:var(--ink-3);margin-bottom:6px}
 .mem{display:flex;flex-wrap:wrap;gap:6px}
-.mem span{font-family:var(--mono);font-size:11px;background:#F0FFC2;border:1px solid #DDF57A;color:#3D4D00;padding:3px 8px;border-radius:999px}
+.mem span{font-family:var(--mono);font-size:12px;background:#F0FFC2;border:1px solid #DDF57A;color:#3D4D00;padding:3px 8px;border-radius:999px}
 .avs{display:flex}
 .avs i{width:24px;height:24px;border-radius:50%;border:2px solid #fff;margin-left:-6px;display:grid;place-items:center;font-style:normal;font-size:10px;font-weight:700;color:#fff}
 .avs i.new{animation:pop .4s both}
@@ -345,56 +355,71 @@ p{margin:0}
 
 /* Personality */
 .faces{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:14px;margin-top:56px}
-.face{aspect-ratio:3/4;border-radius:var(--r-lg);border:0;padding:16px;display:flex;flex-direction:column;justify-content:space-between;align-items:stretch;text-align:left;position:relative;overflow:hidden;transition:transform .35s cubic-bezier(.3,1.6,.5,1)}
-.face:hover{transform:translateY(-6px) rotate(-1.5deg)}
-.face:nth-child(even):hover{transform:translateY(-6px) rotate(1.5deg)}
-.face svg{width:78%;margin:8px auto 0;display:block;overflow:visible}
+.face{aspect-ratio:3/4;border-radius:var(--r-lg);border:0;padding:18px;display:flex;flex-direction:column;justify-content:space-between;align-items:stretch;text-align:left;position:relative;overflow:hidden;transition:transform .2s ease-out}
+.face:hover{transform:translateY(-4px)}
+.face svg{width:76%;margin:4px auto 0;display:block;overflow:visible}
 .face b{font-family:var(--display);font-size:clamp(17px,1.6vw,21px);letter-spacing:-.015em}
-.face small{font-family:var(--mono);font-size:10.5px;opacity:.65;display:block}
 .face[aria-pressed="true"]{outline:3px solid var(--ink);outline-offset:3px}
 .say{margin:28px auto 0;max-width:640px;display:flex;gap:14px;align-items:center;background:var(--card);border:1px solid var(--line);border-radius:20px;padding:14px 18px;box-shadow:0 20px 40px -28px rgba(12,29,42,.4)}
 .say .av{width:44px;height:44px;flex:none}
 .say p{font-size:16px;font-weight:500}
-.say small{display:block;font-family:var(--mono);font-size:11px;color:var(--ink-3);margin-bottom:2px}
+.say small{display:block;font-size:13px;font-weight:600;color:var(--ink-2);margin-bottom:2px}
 @media (max-width:980px){.faces{grid-template-columns:repeat(3,minmax(0,1fr))}}
 @media (max-width:520px){.faces{grid-template-columns:repeat(2,minmax(0,1fr))}}
 
 /* Mascot */
 [data-face] svg,.av svg,.mini svg,.peek>svg{width:100%;height:100%;display:block}
+.price-l [data-face] svg{width:170px;height:170px}
 .fi{display:inline-block;width:15px;height:11px;border-radius:2px;background:var(--sky);flex:none}
 .fi.f{width:11px;height:14px;background:#fff;border:1.5px solid var(--ink-3)}
 .fi.c{background:var(--lime);border-radius:3px;width:13px;height:13px}
-.mascot .m-body{fill:var(--lime)}
-.mascot .m-eyes{fill:var(--ink);transform:translate(var(--ex,0px),var(--ey,0px));transition:transform .18s ease-out}
-.mascot .m-eyes ellipse{transform-box:fill-box;transform-origin:center;animation:blink 5.5s infinite}
-.mascot .m-eyes ellipse:nth-child(2){animation-delay:.04s}
-.mascot .m-shine{fill:#fff}
-@keyframes blink{0%,94%,100%{transform:scaleY(1)}96%{transform:scaleY(.1)}}
-.mascot .m-mouth{fill:none;stroke:var(--ink);stroke-width:4.5;stroke-linecap:round;opacity:0;transition:opacity .15s}
-.mascot .m-o{fill:var(--ink);stroke:none}
-.mascot[data-mood="idle"] .m-idle,.mascot[data-mood="happy"] .m-happy,.mascot[data-mood="o"] .m-o,.mascot[data-mood="think"] .m-think{opacity:1}
-.mascot[data-mood="think"] .m-eyes{transform:translate(4px,-5px)}
-.mascot.sky .m-body{fill:var(--sky)}
+.sav{display:block;overflow:visible}
+.sav .s-bg{fill:var(--ink)}
+.sav .s-ring{fill:none;stroke:var(--lime);stroke-opacity:.38;stroke-width:1.8}
+.sav .s-sweep{fill:var(--lime);transform-box:view-box;transform-origin:50% 50%;animation:spin 3.6s linear infinite}
+.sav .s-edge{stroke:var(--lime);stroke-width:2.2;stroke-linecap:round}
+.sav .s-blip,.sav .s-core{fill:var(--lime)}
+.sav .s-track{transform-box:view-box;transform-origin:50% 50%;transform:rotate(var(--a,38deg))}
+.sav .s-blip{transform-box:fill-box;transform-origin:center;animation:blip 1.8s ease-in-out infinite}
+.sav .s-echo,.sav .s-ping{fill:none;stroke:var(--lime);stroke-width:2;opacity:0;transform-box:fill-box;transform-origin:center}
+.sav .s-ln{fill:none;stroke:var(--lime);stroke-width:2;stroke-linecap:round}
+.sav .s-faint{fill:var(--lime);opacity:.45}
+.sav .s-grid{fill:none;stroke:var(--lime);stroke-opacity:.25;stroke-width:1}
+.sav .s-ping{animation:echo 2.4s cubic-bezier(.2,.6,.3,1) infinite}
+.sav[data-mood="think"] .s-sweep{animation-duration:1.1s}
+.sav[data-mood="idle"] .s-sweep{animation-duration:7s}
+.sav[data-mood="found"] .s-echo{animation:echo 1.2s cubic-bezier(.2,.6,.3,1) infinite}
+.sav[data-mood="found"] .s-blip{animation:none;transform:scale(1.35)}
+@keyframes blip{0%,100%{transform:scale(1)}50%{transform:scale(.72)}}
+@keyframes echo{from{transform:scale(1);opacity:.95}to{transform:scale(3.4);opacity:0}}
+.sav.lime .s-bg{fill:var(--lime)}
+.sav.lime .s-sweep,.sav.lime .s-blip,.sav.lime .s-core,.sav.lime .s-faint{fill:var(--ink)}
+.sav.lime .s-ring,.sav.lime .s-edge,.sav.lime .s-echo,.sav.lime .s-ping,.sav.lime .s-ln,.sav.lime .s-grid{stroke:var(--ink)}
+.sav.paper .s-bg{fill:var(--paper)}
+.sav.paper .s-sweep,.sav.paper .s-blip,.sav.paper .s-core,.sav.paper .s-faint{fill:var(--sky-deep)}
+.sav.paper .s-ring,.sav.paper .s-edge,.sav.paper .s-echo,.sav.paper .s-ping,.sav.paper .s-ln,.sav.paper .s-grid{stroke:var(--sky-deep)}
+.sav.line .s-bg{fill:currentColor;fill-opacity:.1}
+.sav.line .s-sweep,.sav.line .s-blip,.sav.line .s-core,.sav.line .s-faint{fill:currentColor}
+.sav.line .s-ring,.sav.line .s-edge,.sav.line .s-echo,.sav.line .s-ping,.sav.line .s-ln,.sav.line .s-grid{stroke:currentColor}
+.mini .s-sweep,.mini .s-blip,.who .s-sweep,.who .s-blip{animation:none}
+.face .sav *{animation-play-state:paused}
+.face:hover .sav *,.face:focus-visible .sav *,.face[aria-pressed="true"] .sav *{animation-play-state:running}
 
 /* Pricing */
 .price{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:0;background:var(--card);border:1px solid var(--line);border-radius:28px;overflow:hidden;margin-top:48px}
 .price-l{padding:40px;background:var(--lime);position:relative;overflow:hidden}
-.price-l .amt{font-family:var(--display);font-size:clamp(88px,11vw,140px);font-weight:800;letter-spacing:-.06em;line-height:.9;margin:24px 0 10px}
+.price-l .amt{font-family:var(--display);font-size:clamp(88px,11vw,140px);font-weight:700;letter-spacing:-.04em;line-height:.9;margin:24px 0 10px}
 .price-l p{font-size:15px;max-width:30ch}
-.price-l .mascot{position:absolute;right:-20px;bottom:-30px;width:170px;transform:rotate(-12deg)}
-.price-l .mascot .m-body{fill:var(--ink)}
-.price-l .mascot .m-eyes,.price-l .mascot .m-o{fill:var(--lime)}
-.price-l .mascot .m-mouth{stroke:var(--lime)}
+.price-l [data-face]{position:absolute;right:-24px;bottom:-34px;width:170px;height:170px}
 .price-r{padding:40px;display:flex;flex-direction:column;gap:24px;justify-content:center}
-.checks{list-style:none;margin:0;padding:0;display:grid;gap:14px}
-.checks li{display:flex;gap:12px;align-items:flex-start;font-size:16px}
-.checks li svg{flex:none;margin-top:2px}
+.checks{list-style:none;margin:0;padding:0;display:grid}
+.checks li{font-size:17px;padding:12px 0;border-top:1px solid var(--line)}
+.checks li:last-child{border-bottom:1px solid var(--line)}
 .row{display:flex;gap:10px;flex-wrap:wrap}
-@media (max-width:820px){.price{grid-template-columns:1fr}.price-l,.price-r{padding:28px}.price-l .mascot{width:104px;right:18px;top:18px;bottom:auto;transform:rotate(10deg)}}
+@media (max-width:820px){.price{grid-template-columns:1fr}.price-l,.price-r{padding:28px}.price-l [data-face]{width:96px;height:96px;right:20px;top:20px;bottom:auto}.price-l [data-face] svg{width:96px;height:96px}}
 
 /* Teams */
 .teams{background:var(--ink);color:var(--paper);position:relative;overflow:hidden}
-.teams .eyebrow{color:var(--lime)}
 .teams .lede{color:#B6C4CF}
 .teams-top{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:40px;align-items:end}
 .slider-ui{display:flex;align-items:center;gap:14px;justify-content:flex-end}
@@ -404,9 +429,9 @@ p{margin:0}
 .arrow:hover{background:var(--lime);color:var(--ink);border-color:var(--lime)}
 .track{display:grid;grid-auto-flow:column;grid-auto-columns:min(420px,82%);gap:16px;overflow-x:auto;scroll-snap-type:x mandatory;margin-top:48px;padding-bottom:8px;scrollbar-width:none}
 .track::-webkit-scrollbar{display:none}
-.tcard{scroll-snap-align:start;border-radius:var(--r-lg);padding:28px;min-height:300px;display:flex;flex-direction:column;justify-content:space-between;background:#13293A;border:1px solid rgba(255,255,255,.08);transition:background .3s}
+.tcard{scroll-snap-align:start;border-radius:var(--r-lg);padding:28px;min-height:260px;display:flex;flex-direction:column;justify-content:space-between;background:#13293A;border:1px solid rgba(255,255,255,.08);transition:background .3s}
 .tcard:hover{background:#183247}
-.tcard .k{font-family:var(--mono);font-size:12px;color:#B6C4CF}
+.tcard .k{font-size:14px;font-weight:500;color:var(--lime)}
 .tcard h3{color:var(--paper);margin-top:auto;margin-bottom:10px}
 .tcard p{color:#B6C4CF;font-size:15px}
 .tcard .ico{width:54px;height:54px;border-radius:16px;display:grid;place-items:center;margin:24px 0 40px}
@@ -431,12 +456,11 @@ details p{padding:0 48px 24px 0;color:var(--ink-2);max-width:62ch}
 
 /* Compare */
 .cmp{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 40px;margin-top:40px}
-.cmp a{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:4px 16px;padding:20px 0;border-top:1px solid var(--line);text-decoration:none;align-items:center}
+.cmp a{display:grid;gap:4px;padding:20px 0;border-top:1px solid var(--line);text-decoration:none;align-items:center}
 .cmp a b{font-family:var(--display);font-size:20px;font-weight:600;letter-spacing:-.01em}
 .cmp a b span{color:var(--ink-3);font-weight:500}
 .cmp a small{grid-column:1;color:var(--ink-2);font-size:14px}
-.cmp a .go{grid-row:1/3;grid-column:2;width:38px;height:38px;border-radius:50%;border:1px solid var(--line);display:grid;place-items:center;transition:.25s}
-.cmp a:hover .go{background:var(--lime);border-color:var(--lime);transform:rotate(-45deg)}
+.cmp a:hover b{text-decoration:underline;text-underline-offset:4px;text-decoration-thickness:2px;text-decoration-color:var(--lime-deep)}
 @media (max-width:760px){.cmp{grid-template-columns:1fr}}
 
 /* Final CTA */
@@ -445,12 +469,8 @@ details p{padding:0 48px 24px 0;color:var(--ink-2);max-width:62ch}
 .final h2{font-size:clamp(42px,6.6vw,88px);max-width:14ch;color:var(--ink)}
 .final .lede{color:#1D3646;margin:0 auto}
 .trio{display:flex;gap:18px;justify-content:center;margin-top:40px}
-.trio button{border:0;background:none;padding:0;width:clamp(84px,12vw,130px);transition:transform .4s cubic-bezier(.3,1.6,.5,1)}
-.trio button:hover{transform:translateY(-14px)}
-.trio button:nth-child(2) .m-body{fill:var(--paper)}
-.trio button:nth-child(3) .m-body{fill:var(--ink)}
-.trio button:nth-child(3) .m-eyes,.trio button:nth-child(3) .m-o{fill:var(--lime)}
-.trio button:nth-child(3) .m-mouth{stroke:var(--lime)}
+.trio button{border:0;background:none;padding:0;width:clamp(84px,12vw,130px);transition:transform .2s ease-out}
+.trio button:hover{transform:translateY(-8px)}
 .bigmark{display:block;width:100%;margin-top:-2%;fill:rgba(255,255,255,.55);transform:translateY(18%)}
 
 /* Footer */
@@ -458,26 +478,21 @@ footer{background:var(--paper);padding-block:72px 40px}
 .foot{display:grid;grid-template-columns:minmax(0,1.4fr) repeat(4,minmax(0,1fr));gap:32px}
 .foot .brand p{color:var(--ink-2);font-size:14px;max-width:30ch;margin-top:14px}
 .foot .brand .logo svg{height:24px}
-.foot h4{font-family:var(--mono);font-size:11.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);margin:0 0 14px;font-weight:500}
+.foot h4{font-size:14px;color:var(--ink);margin:0 0 14px;font-weight:600}
 .foot ul{list-style:none;margin:0;padding:0;display:grid;gap:9px}
 .foot ul a{text-decoration:none;font-size:14px;color:var(--ink-2)}
 .foot ul a:hover{color:var(--ink)}
-.foot-b{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;border-top:1px solid var(--line);margin-top:56px;padding-top:22px;font-family:var(--mono);font-size:12px;color:var(--ink-3)}
+.foot-b{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;border-top:1px solid var(--line);margin-top:56px;padding-top:22px;font-size:13px;color:var(--ink-3)}
 @media (max-width:900px){.foot{grid-template-columns:repeat(2,minmax(0,1fr))}.foot .brand{grid-column:1/-1}}
 
 /* Floating launcher + click pings */
-.launcher{position:fixed;right:calc(20px + env(safe-area-inset-right,0px));bottom:calc(20px + env(safe-area-inset-bottom,0px));z-index:40;display:flex;align-items:center;gap:10px;border:0;background:var(--ink);color:var(--paper);border-radius:999px;padding:6px 18px 6px 6px;font-weight:600;font-size:14px;box-shadow:0 18px 40px -14px rgba(12,29,42,.6);transition:transform .3s cubic-bezier(.3,1.6,.5,1),opacity .3s}
-.launcher:hover{transform:translateY(-3px)}
+.launcher{touch-action:manipulation;position:fixed;right:calc(20px + env(safe-area-inset-right,0px));bottom:calc(20px + env(safe-area-inset-bottom,0px));z-index:40;display:flex;align-items:center;gap:10px;border:0;background:var(--ink);color:var(--paper);border-radius:999px;padding:6px 18px 6px 6px;font-weight:600;font-size:14px;box-shadow:0 18px 40px -14px rgba(12,29,42,.6);transition:transform .2s ease-out,opacity .2s ease-out}
 .launcher .av{width:42px;height:42px;position:relative}
 .launcher .av::after{content:"";position:absolute;inset:0;border-radius:50%;border:2px solid var(--lime);animation:ping 2.4s infinite}
 .launcher.hide{opacity:0;pointer-events:none;transform:translateY(20px)}
-.ping{position:fixed;width:16px;height:16px;margin:-8px 0 0 -8px;border-radius:50%;border:2px solid var(--sky);pointer-events:none;z-index:100;animation:clickping .9s cubic-bezier(.2,.6,.3,1) forwards}
-.ping.b{animation-delay:.12s;opacity:0}
-@keyframes clickping{0%{transform:scale(.4);opacity:1}100%{transform:scale(5);opacity:0}}
 
 @media (prefers-reduced-motion:reduce){
   *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}
-  .marquee{animation:none}
 }
 </style>
 </head>
@@ -487,9 +502,10 @@ footer{background:var(--paper);padding-block:72px 40px}
   <symbol id="logo" viewBox="0 0 916 188"><use href="#lg"/></symbol>
 </svg>
 
+<a class="skip" href="#main">Skip to content</a>
 <header class="nav" id="nav">
   <div class="wrap nav-in">
-    <a class="logo" href="#top" aria-label="Sonar home"><svg viewBox="0 0 916 188"><use href="#lg"/></svg></a>
+    <a class="logo" href="#main" aria-label="Sonar home"><svg viewBox="0 0 916 188"><use href="#lg"/></svg></a>
     <nav class="nav-links" aria-label="Main">
       <a href="#demo">Live demo</a>
       <a href="#how">How it works</a>
@@ -509,31 +525,31 @@ footer{background:var(--paper);padding-block:72px 40px}
   <a href="#demo">Live demo</a><a href="#how">How it works</a><a href="#features">Features</a><a href="#pricing">Pricing</a><a href="#teams">For Teams</a><a href="#faq">FAQ</a>
 </nav>
 
-<main id="top">
+<main id="main">
 <!-- HERO -->
 <section class="hero" id="hero">
   <div class="hero-sky" id="heroSky" aria-hidden="true"></div>
+  <canvas class="sonar-cv" id="sonarCv" aria-hidden="true"></canvas>
   <div class="wrap hero-in">
-    <span class="badge"><b>NEW</b> Built on Agentplace · Live on your site in one click</span>
     <h1>
       <span>Meet</span>
       <svg class="wm" viewBox="0 0 916 188" role="img" aria-label="Sonar" id="heroMark">
+        <defs><clipPath id="oClip"><ellipse cx="279" cy="94" rx="61" ry="68"/></clipPath></defs>
         <use class="letters" href="#lg"/>
-        <circle class="pupil" id="heroPupil" cx="279" cy="94" r="25"/>
+        <g class="o-scope" clip-path="url(#oClip)"><circle cx="279" cy="94" r="44"/><circle cx="279" cy="94" r="22"/><g class="o-sweep" id="oSweep"></g></g>
+        <circle class="pupil" id="heroPupil" cx="279" cy="94" r="22"/>
       </svg>
     </h1>
     <p class="sub">Your 24/7 consultative AI agent. Sonar investigates each prospect's current stage, detects their biggest growth bottleneck, and guides ready-to-buy leads straight to your calendar.</p>
     <div class="hero-ctas">
-      <a class="btn btn-lime" href="#demo" data-talk>Test the live agent <span class="arr">→</span></a>
-      <a class="btn btn-glass" href="#pricing">Deploy on your site</a>
+      <a class="btn btn-lime" href="#demo" data-talk>Test the live agent</a>
+      <a class="btn btn-ghost" href="#pricing">Deploy on your site</a>
     </div>
-    <p class="hero-note">Free demo<span>·</span>One script tag<span>·</span>Works with HubSpot, Pipedrive &amp; Cal.com</p>
 
     <div class="demo" id="demo">
-      <p class="demo-cap">INTERACTIVE PREVIEW · Sonar running on a sample agency site. Tap an answer or type your own.</p>
       <div class="demo-grid">
         <div class="stage">
-          <button class="peek" id="peek" aria-label="Say hi to Sonar"><span class="bubble" id="peekBubble">Psst. Try the chat!</span></button>
+          <button class="peek" id="peek" aria-label="Say hi to Sonar"><span class="bubble" id="peekBubble">Try the chat below.</span></button>
           <div class="browser">
             <div class="b-bar"><i></i><i></i><i></i>
               <div class="b-url"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>northpeak.agency/pricing</div>
@@ -554,7 +570,7 @@ footer{background:var(--paper);padding-block:72px 40px}
                 <div class="w-head">
                   <span class="av" id="wAv"></span>
                   <div><b>Sonar · Northpeak</b><small><i class="live-dot"></i>Online · replies instantly</small></div>
-                  <button class="replay" id="replay" type="button">↺ Replay</button>
+                  <button class="replay" id="replay" type="button"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M3 12a9 9 0 1 0 3-6.7L3 8M3 3v5h5"/></svg>Replay</button>
                 </div>
                 <div class="msgs" id="msgs" aria-live="polite"></div>
                 <div class="chips" id="chips"></div>
@@ -570,7 +586,7 @@ footer{background:var(--paper);padding-block:72px 40px}
         </div>
 
         <aside class="dx" aria-label="Live diagnosis">
-          <div class="dx-h"><b>Live diagnosis</b><span class="rec"><i></i>REC</span></div>
+          <div class="dx-h"><b>Live diagnosis</b><span class="rec" id="dxRec"><i></i>Listening</span></div>
           <div class="dx-row"><span>Visitor</span><strong>#2,481 · Google Ads</strong></div>
           <div class="dx-row"><span>Growth stage</span><strong class="wait" id="dxStage">listening…</strong></div>
           <div class="dx-row"><span id="dxL1">Signal 1</span><strong class="wait" id="dxV1">listening…</strong></div>
@@ -594,8 +610,8 @@ footer{background:var(--paper);padding-block:72px 40px}
 
 <!-- Channels strip -->
 <div class="strip" aria-label="Works with">
-  <p>Plugs into the stack you already use</p>
-  <div class="marquee" aria-hidden="true" id="marquee"></div>
+  <p>Works with the tools you already use</p>
+  <div class="wrap tools" id="tools"></div>
 </div>
 
 <!-- 24/7 -->
@@ -604,8 +620,7 @@ footer{background:var(--paper);padding-block:72px 40px}
   <div class="wrap clock-grid">
     <div>
       <div class="sec-head">
-        <span class="eyebrow">Always on</span>
-        <h2>Your funnel works while you sleep.</h2>
+                <h2>Your funnel works while you sleep.</h2>
         <p class="lede">Sonar has a clear role, a diagnostic framework and one goal: a qualified call on your calendar. Drag through the day to see what it handles while your team is offline.</p>
       </div>
       <div class="dial">
@@ -635,8 +650,7 @@ footer{background:var(--paper);padding-block:72px 40px}
 <section class="sec feats" id="features">
   <div class="wrap">
     <div class="sec-head">
-      <span class="eyebrow">What Sonar does</span>
-      <h2>A growth consultant built into your website.</h2>
+            <h2>A growth consultant built into your website.</h2>
       <p class="lede">Sonar greets every visitor, asks the right questions, maps their bottleneck and books the call. It runs on your methodology, 24/7.</p>
     </div>
     <div class="feat-grid">
@@ -645,7 +659,7 @@ footer{background:var(--paper);padding-block:72px 40px}
         <button class="tab" role="tab" aria-selected="false" aria-controls="p1" id="t1"><b>Plugs into your stack</b><span>HubSpot, Pipedrive, Salesforce, Cal.com, Calendly, WhatsApp, Slack or any webhook.</span><div class="prog"><i></i></div></button>
         <button class="tab" role="tab" aria-selected="false" aria-controls="p2" id="t2"><b>Grounded in your playbook</b><span>Trained only on your services, pricing, case studies and rules. No made-up ROI promises.</span><div class="prog"><i></i></div></button>
         <button class="tab" role="tab" aria-selected="false" aria-controls="p3" id="t3"><b>Structured diagnostic flows</b><span>Discovery, scoring and booking in clear steps you can change as your offers evolve.</span><div class="prog"><i></i></div></button>
-        <button class="tab" role="tab" aria-selected="false" aria-controls="p4" id="t4"><b>Seamless human handoff</b><span>Your closers get high-intent prospects with the full diagnosis attached.</span><div class="prog"><i></i></div></button>
+        <button class="tab" role="tab" aria-selected="false" aria-controls="p4" id="t4"><b>Human handoff</b><span>Your closers get high-intent prospects with the full diagnosis attached.</span><div class="prog"><i></i></div></button>
         <button class="tab" role="tab" aria-selected="false" aria-controls="p5" id="t5"><b>Switch channels, keep context</b><span>Start on the website, continue on WhatsApp or email. Nobody repeats an answer.</span><div class="prog"><i></i></div></button>
       </div>
 
@@ -653,7 +667,7 @@ footer{background:var(--paper);padding-block:72px 40px}
         <!-- 0 curious -->
         <div class="panel on" role="tabpanel" id="p0" aria-labelledby="t0">
           <div class="card">
-            <div class="card-h"><span class="hash">#</span>inbound-lead<span class="r pill">Live</span></div>
+            <div class="card-h"><span class="hash">#</span>inbound-lead</div>
             <div class="card-b stag">
               <div class="line"><span class="who" style="background:var(--violet)">SK</span><div><b>Sarah</b><time>9:13</time><br>We need more leads.</div></div>
               <div class="line"><span class="who s" data-face></span><div><b>Sonar</b><time>9:13</time><br>More leads, or more of the right leads?</div></div>
@@ -712,7 +726,7 @@ footer{background:var(--paper);padding-block:72px 40px}
         <div class="panel" role="tabpanel" id="p4" aria-labelledby="t4">
           <div class="card">
             <div class="card-h"><span class="hash">#</span>sales-handoff
-              <span class="r" style="display:flex;align-items:center;gap:12px"><span class="avs" id="avs"><i style="background:var(--coral)">AL</i><i style="background:var(--violet)">MJ</i></span><button class="btn btn-line btn-sm" id="invite" type="button" style="height:30px;font-size:12px">Invite</button></span>
+              <span class="r" style="display:flex;align-items:center;gap:12px"><span class="avs" id="avs"><i style="background:var(--coral)">AL</i><i style="background:var(--violet)">MJ</i></span><button class="btn btn-line btn-sm" id="invite" type="button" style="height:36px;font-size:13px">Invite</button></span>
             </div>
             <div class="card-b stag">
               <div class="line"><span class="who s" data-face></span><div><b>Sonar</b><time>11:02</time><br>Qualified lead: <b>Acme Corp</b>, $40k/mo revenue.<br><span class="tag pill">Leak: high CAC on paid search</span> <span class="tag pill ok">Fit 91</span> <span class="tag pill">Call Thu 10:30</span></div></div>
@@ -757,12 +771,11 @@ footer{background:var(--paper);padding-block:72px 40px}
 <section class="sec" id="personality" style="padding-top:0">
   <div class="wrap">
     <div class="sec-head center">
-      <span class="eyebrow">Personality</span>
-      <h2>Curious about everything. Pushy about nothing.</h2>
-      <p class="lede">Sonar's posture is consultative and helpful. Tap a face to hear how each side of it talks to your prospects.</p>
+            <h2>Curious like a good consultant, never pushy.</h2>
+      <p class="lede">Every trait shows up in how Sonar talks to your prospects.</p>
     </div>
     <div class="faces" id="faces"></div>
-    <div class="say" aria-live="polite"><span class="av" id="sayAv"></span><div><small id="sayK">CURIOUS</small><p id="sayT">“Wait, what changed in March? Your lead volume doubled.”</p></div></div>
+    <div class="say" aria-live="polite"><span class="av" id="sayAv"></span><div><small id="sayK">Curious</small><p id="sayT">“Wait, what changed in March? Your lead volume doubled.”</p></div></div>
   </div>
 </section>
 
@@ -770,24 +783,23 @@ footer{background:var(--paper);padding-block:72px 40px}
 <section class="sec" id="pricing" style="padding-top:0">
   <div class="wrap">
     <div class="sec-head center">
-      <span class="eyebrow">Pricing</span>
-      <h2>Live on your site in minutes.</h2>
+            <h2>Live on your site in minutes.</h2>
     </div>
     <div class="price">
       <div class="price-l">
-        <span class="eyebrow" style="color:var(--ink)">Starter</span>
+        <strong class="plan">Starter</strong>
         <div class="amt">$0</div>
         <p>Free interactive demo on Agentplace. Try it on your own site before you commit.</p>
         <span data-face="price"></span>
       </div>
       <div class="price-r">
         <ul class="checks">
-          <li><svg width="22" height="22" viewBox="0 0 24 24"><circle cx="12" cy="12" r="11" fill="#D6FF25"/><path d="M7 12.5l3 3 7-7" fill="none" stroke="#0C1D2A" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>The full consultative diagnostic flow</li>
-          <li><svg width="22" height="22" viewBox="0 0 24 24"><circle cx="12" cy="12" r="11" fill="#D6FF25"/><path d="M7 12.5l3 3 7-7" fill="none" stroke="#0C1D2A" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>Your brand colors, typography and avatar</li>
-          <li><svg width="22" height="22" viewBox="0 0 24 24"><circle cx="12" cy="12" r="11" fill="#D6FF25"/><path d="M7 12.5l3 3 7-7" fill="none" stroke="#0C1D2A" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>One-line web embed and CRM sync</li>
+          <li>The full consultative diagnostic flow</li>
+          <li>Your brand colors, typography and avatar</li>
+          <li>One-line web embed and CRM sync</li>
         </ul>
         <div class="row">
-          <a class="btn btn-ink" href="#demo" data-talk>Test the live demo <span class="arr">→</span></a>
+          <a class="btn btn-ink" href="#demo" data-talk>Test the live demo</a>
           <a class="btn btn-line" href="#teams">Custom team setup</a>
         </div>
       </div>
@@ -800,10 +812,9 @@ footer{background:var(--paper);padding-block:72px 40px}
   <div class="wrap">
     <div class="teams-top">
       <div class="sec-head">
-        <span class="eyebrow">Sonar for growth teams</span>
-        <h2>AI sales consultants across your entire funnel.</h2>
+                <h2>AI sales consultants across your entire funnel.</h2>
         <p class="lede">We deploy Sonar on your landing pages, paid campaigns and outbound funnels, calibrated to your ICP and your CRM.</p>
-        <div class="row" style="margin-top:8px"><a class="btn btn-lime" href="#faq">Talk to us <span class="arr">→</span></a><a class="btn btn-glass" href="#features">How it works</a></div>
+        <div class="row" style="margin-top:8px"><a class="btn btn-lime" href="#faq">Talk to us</a><a class="btn btn-ghost" href="#features">See what Sonar does</a></div>
       </div>
       <div class="slider-ui">
         <span class="count" id="count"><b>01</b> / 04</span>
@@ -812,10 +823,10 @@ footer{background:var(--paper);padding-block:72px 40px}
       </div>
     </div>
     <div class="track" id="track">
-      <article class="tcard"><span class="k">01 / 04 · Week 1</span><span class="ico" style="background:var(--lime)"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#0C1D2A" stroke-width="2.2"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/></svg></span><h3>Always-on capture</h3><p>Every paid click gets an immediate, consultative reply, day or night. No lead waits for Monday.</p></article>
-      <article class="tcard"><span class="k">02 / 04 · Week 1</span><span class="ico" style="background:var(--sky)"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2"><path d="M4 20l4-1L19 8a2 2 0 0 0-3-3L5 16z"/></svg></span><h3>Brand-native UI</h3><p>Your colors, typography, avatar and tone. Sonar looks like it was always part of your site.</p></article>
-      <article class="tcard"><span class="k">03 / 04 · Week 2</span><span class="ico" style="background:var(--pink)"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#0C1D2A" stroke-width="2.2"><path d="M9 7H6a4 4 0 0 0 0 8h3M15 7h3a4 4 0 0 1 0 8h-3M8 11h8"/></svg></span><h3>Custom integrations</h3><p>Connected to your CRM, routing rules, Slack alerts and booking links, tested end to end.</p></article>
-      <article class="tcard"><span class="k">04 / 04 · Ongoing</span><span class="ico" style="background:var(--sun)"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#0C1D2A" stroke-width="2.2"><path d="M3 17l6-6 4 4 8-8M15 7h6v6"/></svg></span><h3>Launch and optimization</h3><p>Full setup, prompt calibration, conversion tracking and monthly funnel tuning with our team.</p></article>
+      <article class="tcard"><span class="k">Week 1</span><h3>Always-on capture</h3><p>Every paid click gets an immediate, consultative reply, day or night. No lead waits for Monday.</p></article>
+      <article class="tcard"><span class="k">Week 1</span><h3>Brand-native UI</h3><p>Your colors, typography, avatar and tone. Sonar looks like it was always part of your site.</p></article>
+      <article class="tcard"><span class="k">Week 2</span><h3>Custom integrations</h3><p>Connected to your CRM, routing rules, Slack alerts and booking links, tested end to end.</p></article>
+      <article class="tcard"><span class="k">Ongoing</span><h3>Launch and optimization</h3><p>Full setup, prompt calibration, conversion tracking and monthly funnel tuning with our team.</p></article>
     </div>
   </div>
 </section>
@@ -824,10 +835,8 @@ footer{background:var(--paper);padding-block:72px 40px}
 <section class="sec" id="faq">
   <div class="wrap faq-grid">
     <div class="faq-l">
-      <span class="eyebrow">FAQ</span>
-      <h2>Questions</h2>
-      <p class="lede">Short answers on setup, qualification logic, integrations and brand control.</p>
-      <a href="#demo" data-talk>Ask Sonar directly →</a>
+            <h2>Questions</h2>
+      <a href="#demo" data-talk>Ask Sonar directly</a>
     </div>
     <div>
       <details open><summary>How is Sonar different from a standard website chatbot?<span class="pm"></span></summary><p>A standard chatbot answers questions from a script. Sonar asks them. It follows a diagnostic framework, works out where the prospect's funnel is leaking, and only then recommends a next step and books the call.</p></details>
@@ -844,18 +853,17 @@ footer{background:var(--paper);padding-block:72px 40px}
 <section class="sec" id="compare" style="padding-top:0">
   <div class="wrap">
     <div class="sec-head">
-      <span class="eyebrow">Compare</span>
-      <h2>Compare Sonar</h2>
+            <h2>Compare Sonar</h2>
     </div>
     <div class="cmp">
-      <a href="#faq"><b>Sonar <span>vs</span> Static contact forms</b><small>Forms collect a name. Sonar finds out why they came.</small><span class="go">→</span></a>
-      <a href="#faq"><b>Sonar <span>vs</span> Rule-based chatbots</b><small>Decision trees vs. follow-up questions that adapt.</small><span class="go">→</span></a>
-      <a href="#faq"><b>Sonar <span>vs</span> Intercom Fin</b><small>Support-first answers vs. sales-first discovery.</small><span class="go">→</span></a>
-      <a href="#faq"><b>Sonar <span>vs</span> Drift</b><small>Conversational routing vs. consultative diagnosis.</small><span class="go">→</span></a>
-      <a href="#faq"><b>Sonar <span>vs</span> HubSpot Chatflows</b><small>Scripted flows vs. an agent that reasons.</small><span class="go">→</span></a>
-      <a href="#faq"><b>Sonar <span>vs</span> Qualified</b><small>Enterprise pipeline suites vs. one-script setup.</small><span class="go">→</span></a>
-      <a href="#faq"><b>Sonar <span>vs</span> Typeform</b><small>Fixed questions vs. a conversation that listens.</small><span class="go">→</span></a>
-      <a href="#faq"><b>All comparisons</b><small>Side-by-side guides for every tool on your shortlist.</small><span class="go">→</span></a>
+      <a href="#faq"><b>Sonar <span>vs</span> Static contact forms</b><small>Forms collect a name. Sonar finds out why they came.</small></a>
+      <a href="#faq"><b>Sonar <span>vs</span> Rule-based chatbots</b><small>Decision trees vs. follow-up questions that adapt.</small></a>
+      <a href="#faq"><b>Sonar <span>vs</span> Intercom Fin</b><small>Support-first answers vs. sales-first discovery.</small></a>
+      <a href="#faq"><b>Sonar <span>vs</span> Drift</b><small>Conversational routing vs. consultative diagnosis.</small></a>
+      <a href="#faq"><b>Sonar <span>vs</span> HubSpot Chatflows</b><small>Scripted flows vs. an agent that reasons.</small></a>
+      <a href="#faq"><b>Sonar <span>vs</span> Qualified</b><small>Enterprise pipeline suites vs. one-script setup.</small></a>
+      <a href="#faq"><b>Sonar <span>vs</span> Typeform</b><small>Fixed questions vs. a conversation that listens.</small></a>
+      <a href="#faq"><b>All comparisons</b><small>Side-by-side guides for every tool on your shortlist.</small></a>
     </div>
   </div>
 </section>
@@ -863,10 +871,9 @@ footer{background:var(--paper);padding-block:72px 40px}
 <!-- Final CTA -->
 <section class="final" id="start">
   <div class="wrap final-in">
-    <span class="eyebrow" style="color:var(--ink)">Ready when your visitors are</span>
     <h2>Meet your first AI growth consultant.</h2>
     <p class="lede">Turn paid traffic and curious visitors into booked diagnostic calls, built on your methodology and your brand.</p>
-    <div class="row" style="justify-content:center"><a class="btn btn-ink" href="#demo" data-talk>Test the live agent <span class="arr">→</span></a><a class="btn btn-line" href="#teams">Book implementation</a></div>
+    <div class="row" style="justify-content:center"><a class="btn btn-ink" href="#demo" data-talk>Test the live agent</a><a class="btn btn-line" href="#teams">Book implementation</a></div>
     <div class="trio" id="trio"></div>
   </div>
   <svg class="bigmark" viewBox="0 0 916 188" aria-hidden="true"><use href="#lg"/></svg>
@@ -877,7 +884,7 @@ footer{background:var(--paper);padding-block:72px 40px}
   <div class="wrap">
     <div class="foot">
       <div class="brand">
-        <a class="logo" href="#top" aria-label="Sonar home"><svg viewBox="0 0 916 188"><use href="#lg"/></svg></a>
+        <a class="logo" href="#main" aria-label="Sonar home"><svg viewBox="0 0 916 188"><use href="#lg"/></svg></a>
         <p>Consultative AI agents that qualify, diagnose and convert. Powered by Agentplace.</p>
       </div>
       <div><h4>Product</h4><ul><li><a href="#demo">Live demo</a></li><li><a href="#features">Features</a></li><li><a href="#teams">Teams</a></li><li><a href="#pricing">Pricing</a></li><li><a href="#personality">Brand kit</a></li></ul></div>
@@ -898,36 +905,45 @@ const $$ = (s, r = document) => [...r.querySelectorAll(s)];
 const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
 const wait = ms => new Promise(r => setTimeout(r, reduce ? Math.min(ms, 80) : ms));
 
-/* ---------- Mascot ---------- */
-function face(mood = 'idle', extra = '') {
-  return `<svg class="mascot ${extra}" viewBox="0 0 100 100" data-mood="${mood}" aria-hidden="true">
-    <circle class="m-body" cx="50" cy="50" r="48"/>
-    <g class="m-eyes"><ellipse cx="35" cy="43" rx="7.5" ry="11"/><ellipse cx="65" cy="43" rx="7.5" ry="11"/></g>
-    <path class="m-mouth m-idle" d="M41 66 Q50 73 59 66"/>
-    <path class="m-mouth m-happy" d="M35 62 Q50 81 65 62"/>
-    <ellipse class="m-mouth m-o" cx="50" cy="69" rx="5" ry="6.5"/>
-    <path class="m-mouth m-think" d="M42 69 L58 66"/>
+/* ---------- Sonar avatar (scope with sweep + tracking blip) ---------- */
+function wedge(cx, cy, r, span = 70, n = 8, max = .55) {
+  let d = '';
+  const pt = a => [cx + r * Math.sin(a * Math.PI / 180), cy - r * Math.cos(a * Math.PI / 180)].map(v => v.toFixed(1)).join(' ');
+  for (let i = 0; i < n; i++) {
+    const a0 = -span + i * span / n, a1 = a0 + span / n + .8;
+    d += `<path d="M${cx} ${cy}L${pt(a0)}A${r} ${r} 0 0 1 ${pt(a1)}Z" opacity="${((i + 1) / n * max).toFixed(2)}"/>`;
+  }
+  return d + `<line class="s-edge" x1="${cx}" y1="${cy}" x2="${cx}" y2="${cy - r}"/>`;
+}
+const SWEEP = wedge(50, 50, 46);
+const MOODS = { o: 'listen', idle: 'listen', happy: 'found', think: 'think', listen: 'listen', found: 'found' };
+function face(mood = 'listen', tone = 'ink', extra = '', trackExtra = '') {
+  return `<svg class="sav ${tone}" viewBox="0 0 100 100" data-mood="${MOODS[mood] || mood}" aria-hidden="true">
+    <circle class="s-bg" cx="50" cy="50" r="48"/>
+    <circle class="s-ring" cx="50" cy="50" r="33"/><circle class="s-ring" cx="50" cy="50" r="18"/>
+    ${extra}<g class="s-sweep">${SWEEP}</g>
+    <g class="s-track">${trackExtra}<circle class="s-echo" cx="50" cy="19" r="6.5"/><circle class="s-blip" cx="50" cy="19" r="6.5"/></g>
+    <circle class="s-core" cx="50" cy="50" r="4.5"/>
   </svg>`;
 }
-$$('[data-face]').forEach(el => { el.innerHTML = face(el.dataset.face === 'big' ? 'happy' : 'idle'); });
+$('#oSweep').innerHTML = wedge(279, 94, 96, 80, 10, .32);
+$$('[data-face]').forEach(el => { const f = el.dataset.face; el.innerHTML = face(f === 'big' ? 'found' : 'listen', f === 'launch' ? 'lime' : 'ink'); });
 $('#wAv').innerHTML = face('idle');
 $('#sayAv').innerHTML = face('happy');
-$('#peek').insertAdjacentHTML('afterbegin', face('o'));
-$('#trio').innerHTML = ['idle', 'happy', 'o'].map(m => `<button type="button" aria-label="Boop Sonar">${face(m)}</button>`).join('');
-function mood(el, m) { const s = el && el.querySelector('.mascot'); if (s) s.dataset.mood = m; }
+$('#peek').insertAdjacentHTML('afterbegin', face('listen', 'lime'));
+$('#trio').innerHTML = [['listen', 'lime'], ['found', 'paper'], ['think', 'ink']].map(([m, t]) => `<button type="button" aria-label="Ping Sonar">${face(m, t)}</button>`).join('');
+function mood(el, m) { const s = el && el.querySelector('.sav'); if (s) s.dataset.mood = MOODS[m] || m; }
 
-/* ---------- Eye tracking (all mascots + hero logo pupil) ---------- */
+/* ---------- Tracking: every scope's blip points at the visitor; the logo's O follows too ---------- */
 let px = innerWidth / 2, py = innerHeight / 3, raf = 0;
 const pupil = $('#heroPupil'), mark = $('#heroMark'), sky = $('#heroSky');
 function look() {
   raf = 0;
-  $$('.mascot').forEach(m => {
+  $$('.sav').forEach(m => {
     const r = m.getBoundingClientRect();
-    if (r.bottom < -50 || r.top > innerHeight + 50) return;
+    if (r.bottom < -50 || r.top > innerHeight + 50 || r.width < 30) return;
     const dx = px - (r.left + r.width / 2), dy = py - (r.top + r.height / 2);
-    const d = Math.hypot(dx, dy) || 1, k = Math.min(1, d / 260);
-    m.style.setProperty('--ex', (dx / d * 6 * k).toFixed(2) + 'px');
-    m.style.setProperty('--ey', (dy / d * 6 * k).toFixed(2) + 'px');
+    m.style.setProperty('--a', (Math.atan2(dx, -dy) * 180 / Math.PI).toFixed(1) + 'deg');
   });
   const r = mark.getBoundingClientRect();
   if (r.bottom > 0) {
@@ -941,17 +957,69 @@ addEventListener('pointermove', e => { px = e.clientX; py = e.clientY; if (!raf)
 addEventListener('scroll', () => { if (!raf) raf = requestAnimationFrame(look); }, { passive: true });
 look();
 
-/* ---------- Sonar click pings ---------- */
-if (!reduce) addEventListener('pointerdown', e => {
-  ['', 'b'].forEach(c => {
-    const p = document.createElement('span'); p.className = 'ping ' + c;
-    p.style.left = e.clientX + 'px'; p.style.top = e.clientY + 'px';
-    document.body.appendChild(p); setTimeout(() => p.remove(), 1200);
-  });
+
+/* ---------- Hero sonar: pings from the logo's O light up visitors in the sky ---------- */
+const hero = $('#hero'), cv = $('#sonarCv'), g = cv.getContext('2d');
+let CW = 0, CH = 0, waves = [], blips = [], heroOn = true, lastPing = -1e9, sRaf = 0;
+const LBL = ['Pricing page · 2 min', 'Google Ads click', 'Returning visitor', 'Asked about pricing', 'LinkedIn ad', 'Read 3 case studies', 'Austin, TX', 'Ready to book'];
+function sonarLayout() {
+  const r = hero.getBoundingClientRect(), d = Math.min(2, devicePixelRatio || 1);
+  CW = r.width; CH = r.height;
+  cv.width = Math.round(CW * d); cv.height = Math.round(CH * d);
+  g.setTransform(d, 0, 0, d, 0, 0);
+  const wide = CW > 1100, top = 96, bot = Math.min(CH - 220, $('.demo').offsetTop + 300);
+  const pts = wide
+    ? [[.05, .12], [.13, .33], [.04, .55], [.12, .8], [.95, .1], [.87, .36], [.96, .58], [.88, .84], [.26, .02], [.74, .04]]
+    : [[.07, .08], [.93, .16], [.05, .34], [.95, .44]];
+  blips = pts.map(([x, y], i) => ({ x: x * CW, y: top + y * (bot - top), lit: -1e9, label: wide && i < 8 ? LBL[i] : '', right: x < .5 }));
+}
+function sonarOrigin() {
+  const h = hero.getBoundingClientRect(), r = mark.getBoundingClientRect();
+  return [r.left - h.left + r.width * 279 / 916, r.top - h.top + r.height * 94 / 188];
+}
+function ping(x, y, s = 1) { waves.push({ x, y, t: performance.now(), s }); if (!sRaf && heroOn) sRaf = requestAnimationFrame(drawSonar); }
+function drawSonar(now) {
+  sRaf = 0;
+  g.clearRect(0, 0, CW, CH);
+  if (!reduce && now - lastPing > 3400) { const [x, y] = sonarOrigin(); ping(x, y, 1); lastPing = now; }
+  const maxR = Math.hypot(CW, CH), v = .34;
+  waves = waves.filter(w => (now - w.t) * v < maxR);
+  for (const w of waves) {
+    const r = Math.max(0, (now - w.t) * v), a = Math.pow(1 - r / maxR, 1.7) * .6 * w.s;
+    g.lineWidth = 1.5;
+    g.strokeStyle = `rgba(255,255,255,${a})`; g.beginPath(); g.arc(w.x, w.y, r, 0, 7); g.stroke();
+    if (r > 20) { g.strokeStyle = `rgba(255,255,255,${a * .35})`; g.beginPath(); g.arc(w.x, w.y, r - 18, 0, 7); g.stroke(); }
+    for (const b of blips) if (Math.abs(Math.hypot(b.x - w.x, b.y - w.y) - r) < 12 && now - b.lit > 1600) b.lit = now;
+  }
+  g.font = '500 12.5px Geist, system-ui, sans-serif'; g.textBaseline = 'middle';
+  for (const b of blips) {
+    const k = (now - b.lit) / 2600;
+    g.fillStyle = 'rgba(255,255,255,.4)'; g.beginPath(); g.arc(b.x, b.y, 2.2, 0, 7); g.fill();
+    if (k >= 1) continue;
+    const a = 1 - k;
+    g.fillStyle = `rgba(214,255,37,${a})`; g.beginPath(); g.arc(b.x, b.y, 4.5, 0, 7); g.fill();
+    g.strokeStyle = `rgba(214,255,37,${a * .85})`; g.lineWidth = 1.5; g.beginPath(); g.arc(b.x, b.y, 5 + 24 * k, 0, 7); g.stroke();
+    if (b.label) {
+      const tw = g.measureText(b.label).width + 20, h = 26, x = b.right ? b.x + 14 : b.x - 14 - tw;
+      g.globalAlpha = Math.min(1, a * 1.8);
+      g.fillStyle = 'rgba(6,28,50,.8)'; g.beginPath(); g.roundRect ? g.roundRect(x, b.y - h / 2, tw, h, 13) : g.rect(x, b.y - h / 2, tw, h); g.fill();
+      g.fillStyle = '#fff'; g.fillText(b.label, x + 10, b.y + .5);
+      g.globalAlpha = 1;
+    }
+  }
+  if (heroOn && (!reduce || waves.length)) sRaf = requestAnimationFrame(drawSonar);
+}
+sonarLayout();
+new ResizeObserver(sonarLayout).observe(hero);
+new IntersectionObserver(en => { heroOn = en[0].isIntersecting; if (heroOn && !sRaf) sRaf = requestAnimationFrame(drawSonar); }).observe(hero);
+hero.addEventListener('pointerdown', e => {
+  if (e.target.closest('a,button,input,.demo')) return;
+  const h = hero.getBoundingClientRect(); ping(e.clientX - h.left, e.clientY - h.top, .9);
 });
+if (reduce) requestAnimationFrame(drawSonar);
 
 /* ---------- Nav ---------- */
-const nav = $('#nav'), hero = $('#hero'), launcher = $('#launcher');
+const nav = $('#nav'), launcher = $('#launcher');
 function onScroll() {
   nav.classList.toggle('scrolled', scrollY > 40);
   const demoR = $('#demo').getBoundingClientRect();
@@ -970,7 +1038,7 @@ $$('[data-talk]').forEach(a => a.addEventListener('click', e => {
 
 /* ---------- Marquee ---------- */
 const tools = ['Agentplace', 'HubSpot', 'Pipedrive', 'Salesforce', 'Twenty', 'Cal.com', 'Calendly', 'WhatsApp', 'Slack', 'n8n', 'Gmail', 'Webhooks'];
-$('#marquee').innerHTML = [...tools, ...tools].map(t => `<span>${t}</span>`).join('');
+$('#tools').innerHTML = tools.map(t => `<span>${t}</span>`).join('');
 
 /* ---------- Hero demo: chat engine ---------- */
 const msgs = $('#msgs'), chips = $('#chips'), form = $('#wForm'), input = $('#wText'), wAv = $('#wAv'), peek = $('#peek');
@@ -992,6 +1060,7 @@ const SCN = {
     dx: 'Found it. You win attention, then lose it in follow-up. Leads who aren’t ready today never hear from you again.', tags: ['Leak: follow-up gap', 'Stage: plateaued'] }
 };
 const SLOTS = ['Thu 10:30 AM', 'Thu 2:00 PM', 'Fri 9:00 AM'];
+const CHECK = '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="vertical-align:-1px;margin-right:6px"><path d="M5 12.5l4.5 4.5L19 7"/></svg>';
 const ABORT = Symbol('abort');
 let run = 0, auto = true, armed = false, pending = null, autoTimer = 0;
 
@@ -999,7 +1068,7 @@ function esc(s) { return s.replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;',
 function scrollMsgs() { msgs.scrollTop = msgs.scrollHeight; }
 function add(who, html) {
   const d = document.createElement('div'); d.className = 'msg ' + who;
-  d.innerHTML = who.startsWith('bot') ? `<span class="mini">${face('idle')}</span><div class="txt">${html}</div>` : html;
+  d.innerHTML = who.startsWith('bot') ? `<span class="mini">${face('listen')}</span><div class="txt">${html}</div>` : html;
   msgs.appendChild(d); scrollMsgs(); return d;
 }
 async function say(text, my, opts = {}) {
@@ -1053,7 +1122,7 @@ function classify(t) {
 }
 /* diagnosis panel */
 const dxStage = $('#dxStage'), dxL1 = $('#dxL1'), dxV1 = $('#dxV1'), dxL2 = $('#dxL2'), dxV2 = $('#dxV2');
-const fEls = $$('#funnel .f'), ringFg = $('#ringFg'), fitNum = $('#fitNum'), fitTrack = $('#fitTrack'), dxNext = $('#dxNext'), dxNextT = $('#dxNextT');
+const dxRec = $('#dxRec'), fEls = $$('#funnel .f'), ringFg = $('#ringFg'), fitNum = $('#fitNum'), fitTrack = $('#fitTrack'), dxNext = $('#dxNext'), dxNextT = $('#dxNextT');
 function setVal(el, v) { el.textContent = v; el.classList.remove('wait', 'flash'); void el.offsetWidth; el.classList.add('flash'); }
 function resetDx() {
   [dxStage, dxV1, dxV2].forEach(e => { e.textContent = 'listening…'; e.className = 'wait'; });
@@ -1061,8 +1130,10 @@ function resetDx() {
   fEls.forEach(f => { f.className = 'f'; f.querySelector('i').style.width = '50%'; });
   ringFg.style.strokeDashoffset = 176; fitNum.textContent = '–'; fitTrack.textContent = 'Scoring as we talk';
   dxNext.classList.remove('done'); dxNextT.textContent = 'Next step: not decided yet';
+  dxRec.classList.remove('done'); dxRec.lastChild.textContent = 'Listening';
 }
-function countTo(el, n) {
+function countTo(el, n, instant) {
+  if (instant) { el.textContent = n; return; }
   const t0 = performance.now(), d = reduce ? 1 : 1100;
   (function step(t) { const k = Math.min(1, (t - t0) / d); el.textContent = Math.round(n * (1 - Math.pow(1 - k, 3))); if (k < 1) requestAnimationFrame(step); })(t0);
 }
@@ -1113,8 +1184,10 @@ async function runScenario(key, my) {
   let slot = r.v;
   if (r.free && !/mon|tue|wed|thu|fri|am|pm|\d/i.test(r.v)) slot = SLOTS[0];
   add('user', esc(r.v));
-  add('sys', `✓ Qualified · Call booked ${esc(slot)} · Brief sent to Alex · Synced to HubSpot`);
+  add('sys', `${CHECK}Qualified · Call booked ${esc(slot)} · Brief sent to Alex · Synced to HubSpot`);
   dxNext.classList.add('done'); dxNextT.textContent = 'Booked · ' + slot + ' with Alex';
+  dxRec.classList.add('done'); dxRec.lastChild.textContent = 'Complete';
+  { const r = $('.dx').getBoundingClientRect(), h = hero.getBoundingClientRect(); ping(r.left - h.left + r.width / 2, r.bottom - h.top - 40, 1); }
   mood(peek, 'happy'); mood(wAv, 'happy');
   await say('Done. Alex will have your notes before the call, so you won’t have to repeat yourself.', my, { mood: 'happy' });
   const again = await ask(['Replay demo', 'Try another problem'], 1);
@@ -1149,10 +1222,10 @@ form.addEventListener('submit', e => {
 input.addEventListener('focus', () => { auto = false; clearTimeout(autoTimer); $$('.chip.press').forEach(c => c.classList.remove('press')); });
 $('#replay').addEventListener('click', () => { auto = true; flow(); });
 peek.addEventListener('click', () => {
-  mood(peek, 'happy'); peek.classList.add('talk');
-  const lines = ['Psst. Try the chat!', 'Boop! That tickles.', 'I see you. Ask me anything.', 'Curious? Me too.'];
+  mood(peek, 'found'); peek.classList.add('talk');
+  const lines = ['Ping. Found you.', 'Try the chat below.', 'I’m listening. Ask me anything.', 'Curious? Me too.'];
   $('#peekBubble').textContent = lines[Math.floor(Math.random() * lines.length)];
-  clearTimeout(peek._t); peek._t = setTimeout(() => { peek.classList.remove('talk'); mood(peek, 'o'); }, 2200);
+  clearTimeout(peek._t); peek._t = setTimeout(() => { peek.classList.remove('talk'); mood(peek, 'listen'); }, 2200);
 });
 flow();
 setTimeout(() => { if (!peek.classList.contains('talk')) { peek.classList.add('talk'); peek._t = setTimeout(() => peek.classList.remove('talk'), 3200); } }, 2200);
@@ -1172,7 +1245,7 @@ const FEED = {
 };
 const clock = $('#how'), hour = $('#hour'), orb = $('#orb');
 const fmt = (h, m) => `${(h % 12) || 12}:${String(m).padStart(2, '0')} ${h < 12 ? 'AM' : 'PM'}`;
-function setHour(h) {
+function setHour(h, instant) {
   let i = 0; while (KEY[i + 1][0] <= h) i++;
   const [h0, t0, b0] = KEY[i], [h1, t1, b1] = KEY[i + 1], k = (h - h0) / (h1 - h0);
   const top = mix(t0, t1, k), bot = mix(b0, b1, k);
@@ -1184,7 +1257,7 @@ function setHour(h) {
   orb.style.boxShadow = sun ? '0 0 0 8px rgba(255,212,59,.25),0 0 40px #FFD43B' : 'inset -10px -4px 0 #C9C4B0,0 0 30px rgba(255,255,255,.35)';
   $('#timeTxt').textContent = fmt(h, 0);
   $('#teamSt').textContent = 'Your team: ' + (h >= 9 && h < 18 ? (h === 12 ? 'at lunch' : 'in meetings') : h >= 23 || h < 7 ? 'asleep' : 'offline');
-  const c = VOL[h]; countTo($('#stC'), c); countTo($('#stD'), Math.round(c * .8)); countTo($('#stB'), Math.max(1, Math.round(c * .27)));
+  const c = VOL[h]; countTo($('#stC'), c, instant); countTo($('#stD'), Math.round(c * .8), instant); countTo($('#stB'), Math.max(1, Math.round(c * .27)), instant);
   const band = h < 6 ? 'night' : h < 12 ? 'morning' : h < 18 ? 'afternoon' : 'evening';
   $('#feedWhen').textContent = fmt(h, 0) + ' – ' + fmt(h, 59);
   $('#feedList').innerHTML = FEED[band].map((f, j) => `<li><time>${fmt(h, [7, 23, 48][j])}</time><div><b>${f[0]}</b><small>${f[1]}</small></div><span class="pill ${f[3] ? 'ok' : ''}">${f[2]}</span></li>`).join('');
@@ -1192,7 +1265,7 @@ function setHour(h) {
 let clockAuto = !reduce, clockTimer = 0;
 hour.addEventListener('input', () => { clockAuto = false; setHour(+hour.value); });
 hour.addEventListener('pointerdown', () => { clockAuto = false; });
-setHour(+hour.value);
+setHour(+hour.value, true);
 new IntersectionObserver(en => {
   clearInterval(clockTimer);
   if (en[0].isIntersecting && clockAuto) clockTimer = setInterval(() => {
@@ -1211,7 +1284,7 @@ function show(i) {
   if (i === 3) runSteps();
 }
 tabs.forEach((t, i) => {
-  t.addEventListener('click', () => show(i));
+  t.addEventListener('click', () => { feats.classList.add('manual'); show(i); });
   t.querySelector('.prog i').addEventListener('animationend', () => show((cur + 1) % tabs.length));
   t.addEventListener('keydown', e => { if (e.key === 'ArrowDown' || e.key === 'ArrowRight') { e.preventDefault(); show((i + 1) % tabs.length); tabs[(i + 1) % tabs.length].focus(); } if (e.key === 'ArrowUp' || e.key === 'ArrowLeft') { e.preventDefault(); const n = (i + tabs.length - 1) % tabs.length; show(n); tabs[n].focus(); } });
 });
@@ -1245,7 +1318,7 @@ function runSteps() {
   })();
 }
 $('#approve').addEventListener('click', e => {
-  const b = e.currentTarget; b.textContent = 'Approved ✓'; b.disabled = true;
+  const b = e.currentTarget; b.textContent = 'Approved'; b.disabled = true;
   $$('#steps li').forEach(l => { l.classList.remove('act'); l.classList.add('ok'); });
   const st = $('#flowSt'); st.textContent = 'Lead handed to Alex'; st.className = 'r pill ok';
 });
@@ -1265,36 +1338,33 @@ $$('#seg button').forEach(b => b.addEventListener('click', () => {
   $$('.chan').forEach(c => c.classList.toggle('on', c.dataset.c === b.dataset.c));
 }));
 
-/* ---------- Personality faces ---------- */
+/* ---------- Personality: one sonar behaviour per trait ---------- */
+const BR = '<path class="s-ln" d="M40 11v-3h3M57 8h3v3M60 27v3h-3M43 30h-3v-3"/>';
 const TRAITS = [
-  ['Curious', 'curioso', 'var(--lime)', 'var(--ink)', 'o', '“Wait, what changed in March? Your lead volume doubled.”'],
-  ['Inquisitive', 'inquisitivo', 'var(--sky)', '#fff', 'think', '“When you say not converting, is that the form, the call or the close?”'],
-  ['Consultative', 'consultivo', 'var(--ink)', 'var(--lime)', 'idle', '“Before more ad spend, let’s fix the two-day reply gap.”'],
-  ['Helpful', 'prestativo', 'var(--pink)', 'var(--ink)', 'happy', '“I booked you with Alex for Thursday and sent her your notes.”'],
-  ['Explorer', 'explorador', 'var(--sun)', 'var(--ink)', 'o', '“You came from our ad about CAC. Want to start there?”'],
-  ['Discoverer', 'descobridor', 'var(--coral)', '#fff', 'happy', '“Found it. Most of your leads drop off right after the pricing page.”']
+  ['Curious', 'var(--lime)', 'var(--ink)', 'listen', '', '', '“Wait, what changed in March? Your lead volume doubled.”'],
+  ['Inquisitive', 'var(--sky-deep)', '#fff', 'listen', '<circle class="s-ping" cx="50" cy="50" r="9"/><circle class="s-ping" cx="50" cy="50" r="9" style="animation-delay:.8s"/><circle class="s-ping" cx="50" cy="50" r="9" style="animation-delay:1.6s"/>', '', '“When you say not converting, is that the form, the call or the close?”'],
+  ['Consultative', 'var(--ink)', 'var(--lime)', 'idle', '<path class="s-ln" d="M50 4v10M50 86v10M4 50h10M86 50h10" opacity=".6"/>', BR, '“Before more ad spend, let’s fix the two-day reply gap.”'],
+  ['Helpful', 'var(--pink)', 'var(--ink)', 'listen', '', '<path class="s-ln" d="M43 40q7-5 14 0M39 33q11-8 22 0" opacity=".8"/>', '“I booked you with Alex for Thursday and sent her your notes.”'],
+  ['Explorer', 'var(--sun)', 'var(--ink)', 'think', '<path class="s-grid" d="M2 50h96M50 2v96M16 16l68 68M84 16L16 84"/><circle class="s-faint" cx="27" cy="64" r="3.5"/><circle class="s-faint" cx="72" cy="70" r="3"/><circle class="s-faint" cx="30" cy="30" r="2.5"/>', '', '“You came from our ad about CAC. Want to start there?”'],
+  ['Discoverer', 'var(--coral)', '#fff', 'found', '', BR, '“Found it. Most of your leads drop off right after the pricing page.”']
 ];
-$('#faces').innerHTML = TRAITS.map((t, i) => `<button class="face" type="button" aria-pressed="${i === 0}" data-i="${i}" style="background:${t[2]};color:${t[3]}">
-  <small>0${i + 1} · ${t[1]}</small>${face(t[4])}<b>${t[0]}</b></button>`).join('');
+$('#faces').innerHTML = TRAITS.map((t, i) => `<button class="face" type="button" aria-pressed="${i === 0}" data-i="${i}" style="background:${t[1]};color:${t[2]}">${face(t[3], 'line', t[4], t[5])}<b>${t[0]}</b></button>`).join('');
 $$('#faces .face').forEach(f => {
-  const t = TRAITS[f.dataset.i], m = f.querySelector('.mascot');
-  m.querySelector('.m-body').style.fill = 'rgba(255,255,255,.0)';
-  m.querySelector('.m-body').style.stroke = 'none';
-  m.querySelector('.m-eyes').style.fill = t[3];
-  m.querySelectorAll('.m-mouth').forEach(p => { p.style.stroke = t[3]; if (p.classList.contains('m-o')) p.style.fill = t[3]; });
-  f.addEventListener('pointerenter', () => m.dataset.mood = 'happy');
-  f.addEventListener('pointerleave', () => m.dataset.mood = t[4]);
-  f.addEventListener('click', () => {
+  const t = TRAITS[f.dataset.i];
+  const pick = () => {
+    if (f.getAttribute('aria-pressed') === 'true') return;
     $$('#faces .face').forEach(x => x.setAttribute('aria-pressed', String(x === f)));
-    $('#sayK').textContent = t[0].toUpperCase(); $('#sayT').textContent = t[5];
-    const sayBox = $('.say'); sayBox.style.animation = 'none'; void sayBox.offsetWidth; sayBox.style.animation = 'pop .4s both';
-  });
+    $('#sayK').textContent = t[0]; $('#sayT').textContent = t[6];
+    const sayBox = $('.say'); sayBox.style.animation = 'none'; void sayBox.offsetWidth; sayBox.style.animation = 'pop .3s both';
+  };
+  f.addEventListener('click', pick); f.addEventListener('focus', pick);
+  f.addEventListener('pointerenter', e => { if (e.pointerType === 'mouse') pick(); });
 });
 
 /* ---------- Trio boops ---------- */
 $$('#trio button').forEach(b => b.addEventListener('click', () => {
-  const m = b.querySelector('.mascot'), prev = m.dataset.mood; m.dataset.mood = 'happy';
-  setTimeout(() => m.dataset.mood = prev, 900);
+  const m = b.querySelector('.sav'), prev = m.dataset.mood; m.dataset.mood = 'found';
+  setTimeout(() => m.dataset.mood = prev, 1400);
 }));
 
 /* ---------- Teams slider ---------- */
