@@ -560,6 +560,7 @@ footer{background:var(--paper);padding-block:72px 40px}
 .launcher .av{width:42px;height:42px;position:relative}
 .launcher .av::after{content:"";position:absolute;inset:0;border-radius:50%;border:2px solid var(--lime);animation:ping 2.4s infinite}
 .launcher.hide{opacity:0;pointer-events:none;transform:translateY(20px)}
+.agent-ready .launcher{display:none}
 
 
 /* ===== Loading screen: the logo's O pings, then the page opens from it ===== */
@@ -1070,6 +1071,13 @@ details[open] p{animation:fadeUp .4s cubic-bezier(.2,.8,.2,1)}
 
 <button class="launcher" id="launcher" data-talk><span class="av" data-face="launch"></span>Talk to Sonar</button>
 
+<script
+  src="https://agentplace.io/admin/embed/v1.js"
+  data-agent-url="https://bzasa2uyc996.run.agentplace.io/"
+  data-controls="input"
+  id="apEmbed"
+  async
+></script>
 <script>
 (() => {
 const $ = (s, r = document) => r.querySelector(s);
@@ -1184,12 +1192,27 @@ addEventListener('scroll', onScroll, { passive: true }); onScroll();
 const burger = $('#burger'), mnav = $('#mnav');
 burger.addEventListener('click', () => { const o = mnav.hidden; mnav.hidden = !o; burger.setAttribute('aria-expanded', String(o)); });
 $$('#mnav a').forEach(a => a.addEventListener('click', () => { mnav.hidden = true; burger.setAttribute('aria-expanded', 'false'); }));
-$$('[data-talk]').forEach(a => a.addEventListener('click', e => {
-  e.preventDefault();
+/* ---------- Live Sonar agent (Agentplace embed) ---------- */
+const AGENT = { agentUrl: 'https://bzasa2uyc996.run.agentplace.io/', controls: 'input', persistence: 'session' };
+let agent = null, agentOk = false;
+function hookAgent() {
+  if (agent || !window.AgentplaceAssistant) return;
+  try { agent = window.AgentplaceAssistant.init(AGENT); } catch (err) { agent = null; return; }
+  agent.ready.then(() => { agentOk = true; document.documentElement.classList.add('agent-ready'); }).catch(() => {});
+}
+hookAgent();
+const apTag = $('#apEmbed'); if (apTag) apTag.addEventListener('load', hookAgent);
+addEventListener('load', hookAgent);
+function talk() {
+  if (agentOk && agent) { agent.open().catch(() => demoFallback()); return; }
+  demoFallback();
+}
+function demoFallback() {
   scrollTo({ top: $('#demo').getBoundingClientRect().top + scrollY - 80, behavior: reduce ? 'auto' : 'smooth' });
   setTimeout(() => $('#wText').focus({ preventScroll: true }), 700);
   auto = false;
-}));
+}
+$$('[data-talk]').forEach(a => a.addEventListener('click', e => { e.preventDefault(); talk(); }));
 
 /* ---------- Marquee ---------- */
 const tools = ['Agentplace', 'HubSpot', 'Pipedrive', 'Salesforce', 'Twenty', 'Cal.com', 'Calendly', 'WhatsApp', 'Slack', 'n8n', 'Gmail', 'Webhooks'];
