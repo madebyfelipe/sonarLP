@@ -529,6 +529,27 @@ footer{background:var(--paper);padding-block:72px 40px}
 .launcher .av::after{content:"";position:absolute;inset:0;border-radius:50%;border:2px solid var(--lime);animation:ping 2.4s infinite}
 .launcher.hide{opacity:0;pointer-events:none;transform:translateY(20px)}
 
+/* Custom cursor: lime blip + trailing sonar ring (mouse only) */
+.cur{position:fixed;inset:0;pointer-events:none;z-index:300;opacity:0;transition:opacity .2s ease-out}
+.cur.on{opacity:1}
+.cur-dot,.cur-ring{position:fixed;left:0;top:0;will-change:transform}
+.cur-dot b{display:block;width:8px;height:8px;margin:-4px 0 0 -4px;border-radius:50%;background:var(--lime);box-shadow:0 0 0 1.5px var(--ink);transition:transform .15s ease-out,opacity .15s ease-out}
+.cur-ring{mix-blend-mode:difference}
+.cur-ring b{display:block;position:relative;width:34px;height:34px;margin:-17px 0 0 -17px;border-radius:50%;border:1.5px solid rgba(255,255,255,.85);transition:transform .2s ease-out,opacity .2s ease-out,border-width .2s ease-out}
+.cur-ring b::before,.cur-ring b::after{content:"";position:absolute;left:50%;top:50%;background:#fff;opacity:0;transition:opacity .2s ease-out}
+.cur-ring b::before{width:1.5px;height:54px;margin:-27px 0 0 -.75px;-webkit-mask:linear-gradient(#000 0 13px,transparent 13px 41px,#000 41px);mask:linear-gradient(#000 0 13px,transparent 13px 41px,#000 41px)}
+.cur-ring b::after{width:54px;height:1.5px;margin:-.75px 0 0 -27px;-webkit-mask:linear-gradient(90deg,#000 0 13px,transparent 13px 41px,#000 41px);mask:linear-gradient(90deg,#000 0 13px,transparent 13px 41px,#000 41px)}
+.cur.hover .cur-ring b{transform:scale(1.55);border-width:1px}
+.cur.hover .cur-dot b{transform:scale(1.5)}
+.cur.aim .cur-ring b{transform:scale(1.1)}
+.cur.aim .cur-ring b::before,.cur.aim .cur-ring b::after{opacity:.85}
+.cur.down .cur-ring b{transform:scale(.75)}
+.cur.text .cur-dot b,.cur.text .cur-ring b{opacity:0}
+.cur-ping{position:fixed;width:20px;height:20px;margin:-10px 0 0 -10px;border-radius:50%;border:1.5px solid #fff;mix-blend-mode:difference;pointer-events:none;z-index:299;animation:curping .7s cubic-bezier(.2,.6,.3,1) forwards}
+@keyframes curping{from{transform:scale(.6);opacity:.9}to{transform:scale(3.4);opacity:0}}
+html.has-cur,html.has-cur *{cursor:none!important}
+html.has-cur input[type="text"],html.has-cur textarea{cursor:text!important}
+
 @media (prefers-reduced-motion:reduce){
   *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}
 }
@@ -952,6 +973,7 @@ footer{background:var(--paper);padding-block:72px 40px}
   </div>
 </footer>
 
+<div class="cur" id="cur" aria-hidden="true"><i class="cur-ring"><b></b></i><i class="cur-dot"><b></b></i></div>
 <button class="launcher" id="launcher" data-talk><span class="av" data-face="launch"></span>Talk to Sonar</button>
 
 <script>
@@ -1048,6 +1070,41 @@ hero.addEventListener('pointerdown', e => {
   const h = hero.getBoundingClientRect(); ping(e.clientX - h.left, e.clientY - h.top, .9);
 });
 if (reduce) requestAnimationFrame(drawSonar);
+
+/* ---------- Custom cursor (fine pointers only; touch keeps the system cursor) ---------- */
+if (matchMedia('(hover: hover) and (pointer: fine)').matches) {
+  const cur = $('#cur'), dot = $('.cur-dot', cur), ring = $('.cur-ring', cur);
+  const HOT = 'a,button,summary,label,[role="tab"],[role="switch"],.face,input[type="range"]';
+  let tx = -100, ty = -100, rx = -100, ry = -100, live = false, cRaf = 0;
+  document.documentElement.classList.add('has-cur');
+  const loop = () => {
+    rx += (tx - rx) * (reduce ? 1 : .22); ry += (ty - ry) * (reduce ? 1 : .22);
+    ring.style.transform = `translate(${rx.toFixed(1)}px,${ry.toFixed(1)}px)`;
+    cRaf = Math.abs(tx - rx) + Math.abs(ty - ry) > .3 ? requestAnimationFrame(loop) : 0;
+  };
+  addEventListener('pointermove', e => {
+    if (e.pointerType !== 'mouse') return;
+    tx = e.clientX; ty = e.clientY;
+    if (!live) { rx = tx; ry = ty; live = true; cur.classList.add('on'); }
+    dot.style.transform = `translate(${tx}px,${ty}px)`;
+    const t = e.target instanceof Element ? e.target : document.body;
+    const typing = !!t.closest('input[type="text"],textarea');
+    cur.classList.toggle('text', typing);
+    cur.classList.toggle('hover', !typing && !!t.closest(HOT));
+    cur.classList.toggle('aim', !!t.closest('.hero') && !t.closest(HOT + ',input,.demo'));
+    if (!cRaf) cRaf = requestAnimationFrame(loop);
+  }, { passive: true });
+  document.addEventListener('mouseout', e => { if (!e.relatedTarget) { cur.classList.remove('on'); live = false; } });
+  addEventListener('pointerdown', e => {
+    if (e.pointerType !== 'mouse') return;
+    cur.classList.add('down');
+    if (reduce || cur.classList.contains('text')) return;
+    const p = document.createElement('span'); p.className = 'cur-ping';
+    p.style.left = e.clientX + 'px'; p.style.top = e.clientY + 'px';
+    document.body.appendChild(p); setTimeout(() => p.remove(), 750);
+  });
+  addEventListener('pointerup', () => cur.classList.remove('down'));
+}
 
 /* ---------- Nav ---------- */
 const nav = $('#nav'), launcher = $('#launcher');
